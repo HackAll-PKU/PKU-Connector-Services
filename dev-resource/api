@@ -1,0 +1,115 @@
+api版本
+    v0.1
+
+api通则:
+    base URL: http://pikkacho.cn/api/v1
+    所有的请求都要带token(除了登陆)
+
+    所有JSON返回外面都会包一层code和msg,data
+    一般情况下code=0为正常,msg为OK,data中为所要的数据
+    若code不为0时,msg中包含出错信息,没有data域
+
+/********************************
+*               User            *
+*********************************/
+
+POST /user
+    参数: uname, password, thumbImg, gender
+    JSON返回uid
+
+GET /user/:uid
+    JSON返回uid所对应的个人所有信息
+
+***************
+* User Object *
+***************
+包含
+    uname
+    thumbImg
+    gender
+
+/*******************************
+*             关注              *
+********************************/
+
+POST /follow/user/:uid
+    JSON返回
+
+DELETE /follow/user/:uid
+    JSON返回
+
+POST /follow/group/:gid
+    JSON返回
+
+DELETE /follow/group/:gid
+    JSON返回
+
+/********************************
+*               认证             *
+*********************************/
+
+POST /login
+    JSON返回token
+
+/********************************
+*            Talking            *
+*********************************/
+
+******************
+* Talking Object *
+******************
+包含
+    type(text或image)
+    text
+    image
+    gid
+    tid
+
+GET /talkings
+    JSON返回所有关注人的talking数据
+
+POST /talkings
+    参数:
+        type:(text或image)
+        text
+        image
+        gid(发表到哪个组)
+    JSON返回tid
+
+DELETE /talkings/:tid
+    JSON返回
+
+/********************************
+*             Comment           *
+*********************************/
+
+POST /comment
+    参数:
+        text
+    JSON返回cid
+
+DELETE /comment/cid
+    JSON返回
+
+/********************************
+*             Group             *
+*********************************/
+
+GET /group/:gid
+    JSON返回gid所对应用户组的所有信息
+
+POST /group
+    参数:
+        gname组名
+        thumbImg
+    JSON返回gid
+
+/*********************************
+*             Search             *
+**********************************/
+
+GET /search/talkings/:searchwords
+    JSON返回搜索到的所有的Talking数据  详见Talking
+
+GET /search/users/:searchwords
+    JSON返回搜索到的所有的user数据  详见User
