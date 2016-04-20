@@ -51,9 +51,8 @@ GET /talkings
 
 POST /talkings *需验证身份*
     参数:
-        type:(text或image)
-        text
-        image
+        text(可选)
+        image(可选)
         gid(发表到哪个组)
     JSON返回是否发表成功
     如发表成功前端控制重加载/index
