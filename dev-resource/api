@@ -59,7 +59,6 @@ POST /login
 * Talking Object *
 ******************
 包含
-    type(text或image)
     text
     image
     gid
@@ -70,7 +69,6 @@ GET /talkings
 
 POST /talkings
     参数:
-        type:(text或image)
         text
         image
         gid(发表到哪个组)
