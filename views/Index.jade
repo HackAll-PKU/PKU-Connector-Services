@@ -3,11 +3,14 @@
 
 extends IndexLayout
 
+block loadParams
+    - args = JSON.parse(args);
+    - console.log("Index");
+    - console.log(args);
 block global_nav
-    include nav
-
+    include Nav
 block PC_left
-    p= "我是左边"
+    include LeftPanel
 block PC_main
     p= "我是中间"
 block PC_right

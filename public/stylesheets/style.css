@@ -18,12 +18,20 @@ body {
     margin: 0 auto;
 }
 
+div.clear {
+    clear: both;
+}
+
 a.no_decoration {
     text-decoration: none;
 }
 
 a.always_black, a.always_black:hover, a.always_black:visited, a.always_black:active {
     color: black;
+}
+
+a.always_white, a.always_white:hover, a.always_white:visited, a.always_white:active {
+    color: white;
 }
 
 /* 导航栏 */
@@ -82,40 +90,46 @@ div.search span.placeholder, div.search input {
     float: right;
 }
 
-div.nav_list {
-    margin: 14px 20px 14px 0;
+.global_nav div.nav_list {
     float: left;
-
+    margin: 14px 20px 14px 0;
+    padding: 0 10px 0 0;
+    border-right: 1px solid #ccc;
 }
 
 ul.nav_list {
     list-style: none;
+    padding: 0;
     margin: 0;
+    float: left;
 }
 
-ul.nav_list li {
+ul.nav_list li.horizontal, ul.nav_list li.vertical {
     float: left;
-    display: inline;
     position: relative;
     margin-left: 30px;
 }
 
-div.tool_list {
-    float: left;
-    margin: 14px 20px 14px 0;
-    border-left: 1px solid #ccc;
-}
-
-ul.tool_list {
-    list-style: none;
-    margin: 0;
-}
-
-ul.tool_list li {
-    float: left;
+ul.nav_list li.horizontal {
     display: inline;
-    position: relative;
-    margin-left: 30px;
+}
+
+ul.nav_list li.vertical {
+    display: block;
+    color: white;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-size: 120%;
+}
+
+li.horizontal a, li.vertical a {
+    display: block;
+    padding: 5px 0 5px 10px;
+}
+
+li.vertical a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* 主页面 */
@@ -124,15 +138,23 @@ ul.tool_list li {
     background-color: rgba(8, 23, 44, 0.25);
 }
 
-.transparent_box {
-    opacity: 0.3;
-}
-
 /* 左栏 */
 .PC_left {
     display: inline-block;
     height: 700px;
     width: 150px;
+    margin-top: 10px;
+    float:left
+}
+
+.PC_left div.nav_list {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.PC_left .border {
+    border-top: 1px solid #22456b;
 }
 
 /* 主内容页面 */
@@ -140,6 +162,7 @@ ul.tool_list li {
     display: inline-block;
     width: 700px;
     height: 700px;
+    margin-top: 10px;
 }
 
 /* 右栏 */
@@ -147,6 +170,7 @@ ul.tool_list li {
     display: inline-block;
     height: 700px;
     width: 150px;
+    margin-top: 10px;
 }
 
 /* 脚注 */
