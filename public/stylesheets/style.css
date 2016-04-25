@@ -34,6 +34,10 @@ a.always_white, a.always_white:hover, a.always_white:visited, a.always_white:act
     color: white;
 }
 
+a.always_inherit, a.always_inherit:hover, a.always_inherit:visited, a.always_inherit:active {
+    color: inherit;
+}
+
 /* 导航栏 */
 .global_nav {
     position: fixed;
@@ -161,8 +165,8 @@ li.vertical a:hover {
 .PC_main {
     display: inline-block;
     width: 700px;
-    height: 700px;
-    margin-top: 10px;
+    margin: 10px 0;
+    float: left;
 }
 
 /* say_something */
@@ -251,23 +255,51 @@ li.vertical a:hover {
 .talking {
     margin-top: 10px;
     background-color: #071a37;
-    width: 100%;
-    height: 700px;
+    padding: 20px 20px 4px 20px;
+}
+
+.talking div.thumb_image {
+    float: left;
+    width: 50px;
+}
+
+.talking div.detail {
+    margin: 0 0 0 60px;
+    padding: 0;
+}
+
+.talking div.detail div.username {
+    margin-bottom: 7px;
+    padding: 5px 0 0 0;
+    color: #b0bdd0;
+}
+
+.talking div.detail div.info {
+    margin-bottom: 2px;
+    color: #38547b;
+    font-size: 12px;
+}
+
+.talking div.detail div.text {
+    margin-bottom: 2px;
+    color: #b0bdd0;
 }
 
 /* 右栏 */
 .PC_right {
     display: inline-block;
-    height: 700px;
     width: 150px;
     margin-top: 10px;
+    float: left;
 }
 
 /* 脚注 */
 .global_footer {
-    padding: 20px;
     width: 100%;
     text-align: center;
-    background-color: olivedrab;
+    background-color: #041142;
+    color: #b0bdd0;
     clear: both;
+    margin: 10px auto;
+    padding: 10px 0;
 }

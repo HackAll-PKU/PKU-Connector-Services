@@ -2,3 +2,13 @@
    Created by ChenLetian on 16/4/25.
 
 div.talking_whole
+    each talking in talkingList
+        div.talking
+            div.thumb_image
+                img(src=talking["thumbImg"])
+            div.detail
+                div.username
+                    a.no_decoration.always_inherit= talking["username"]
+                div.info= talking["timestamp"]
+                div.text= talking["text"]
+            div.clear
