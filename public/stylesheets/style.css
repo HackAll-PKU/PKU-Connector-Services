@@ -1,8 +1,139 @@
+/* global settings */
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin: 0px;
+    padding: 0px;
+    font: 14px Helvetica Neue, 方正楷体简体, 方正喵呜体, 方正综艺简体, Arial, sans-serif;
+    background-color: #0d3b6c;
 }
 
-a {
-  color: #00B7FF;
+.global_whole {
+    padding-top: 50px;
+    width: 100%;
+    background: url("../images/background.jpg") top center no-repeat;
+    background-size: auto auto;
+}
+
+.center1000 {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+a.no_decoration {
+    text-decoration: none;
+}
+
+a.always_black, a.always_black:hover, a.always_black:visited, a.always_black:active {
+    color: black;
+}
+
+/* 导航栏 */
+.global_nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 48px;
+    width: 100%;
+    z-index: 9999;
+    padding: 0;
+    border-top: 2px solid #fa7d3c;
+    background-color: white;
+    display: block;
+}
+
+.logo_large {
+    float: left;
+    width: auto;
+    height: 48px;
+}
+
+.logo_large h1 {
+    margin: 9px 0;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+}
+
+div.search {
+    float: left;
+    margin: 9px 0 9px 15px;
+    border: 1px solid #ccc;
+    width: 288px;
+    height: 28px;
+    position: relative;
+    background-color: #f2f2f5;
+    border-radius: 8px;
+}
+
+div.search span.placeholder, div.search input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 245px;
+    padding: 4px 33px 4px 10px;
+    height: 20px;
+    line-height: 20px;
+    background-color: transparent;
+    overflow: hidden;
+    color: #808080;
+    border: none;
+}
+
+.global_nav .right_position {
+    float: right;
+}
+
+div.nav_list {
+    margin: 14px 20px 14px 0;
+    float: left;
+
+}
+
+ul.nav_list {
+    list-style: none;
+    margin: 0;
+}
+
+ul.nav_list li {
+    float: left;
+    display: inline;
+    position: relative;
+    margin-left: 30px;
+}
+
+/* 主页面 */
+.global_main {
+    display: block;
+}
+
+/* 左栏 */
+.PC_left {
+    display: inline-block;
+    background-color: aqua;
+    height: 700px;
+    width: 150px;
+}
+
+/* 主内容页面 */
+.PC_main {
+    display: inline-block;
+    background-color: blue;
+    width: 700px;
+    height: 700px;
+}
+
+/* 右栏 */
+.PC_right {
+    display: inline-block;
+    background-color: darkred;
+    height: 700px;
+    width: 150px;
+}
+
+/* 脚注 */
+.global_footer {
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    background-color: olivedrab;
+    clear: both;
 }

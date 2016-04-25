@@ -1,0 +1,27 @@
+//
+   Created by ChenLetian on 16/4/24.
+
+extends IndexLayout
+
+block global_nav
+    - args = JSON.parse(args);
+    .logo_large
+        a.no_decoration.always_black(href="/")
+            h1= args.title
+    .search
+        span.placeholder= "searching"
+        input
+    .right_position
+        div.nav_list
+            ul.nav_list
+                li= "index"
+                li= args.username
+
+block PC_left
+    p= "我是左边"
+block PC_main
+    p= "我是中间"
+block PC_right
+    p= "我是右边"
+block footer
+    p= "我是footer"
