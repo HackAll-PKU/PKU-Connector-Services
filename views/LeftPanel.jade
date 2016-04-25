@@ -15,11 +15,7 @@ div.nav_list
 div.border
 div.nav_list
     ul.nav_list
-        -
-            group_list = [{"title": "软双", "href" : "/"},
-            {"title": "运动会", "href" : "/"},
-            {"title": "database", "href" : "/"}];
-        each item in group_list
+        each item in groupList
             li.vertical
                 a.always_white.no_decoration(href=item["href"])= item["title"]
     div.clear

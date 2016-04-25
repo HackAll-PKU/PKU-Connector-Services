@@ -4,15 +4,20 @@
 extends IndexLayout
 
 block loadParams
-    - args = JSON.parse(args);
-    - console.log("Index");
-    - console.log(args);
+    -
+        args = JSON.parse(args);
+        title = args.title;
+        username = args.username;
+        groupList = args.groupList;
+        talkingList = args.talkingList;
+        console.log(args);
 block global_nav
     include Nav
 block PC_left
     include LeftPanel
 block PC_main
-    p= "我是中间"
+    include WantToSaySomething
+    include Talkings
 block PC_right
     p= "我是右边"
 block footer
