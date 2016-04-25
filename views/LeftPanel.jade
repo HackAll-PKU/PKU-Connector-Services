@@ -16,11 +16,10 @@ div.border
 div.nav_list
     ul.nav_list
         -
-            nav_list = [{"title": "首页", "href" : "/"},
-            {"title": "未读消息", "href" : "/"},
-            {"title": "收藏", "href" : "/"},
-            {"title": "赞", "href" : "/"}];
-        each item in nav_list
+            group_list = [{"title": "软双", "href" : "/"},
+            {"title": "运动会", "href" : "/"},
+            {"title": "database", "href" : "/"}];
+        each item in group_list
             li.vertical
                 a.always_white.no_decoration(href=item["href"])= item["title"]
     div.clear
