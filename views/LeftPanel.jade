@@ -1,6 +1,8 @@
+//- 左侧栏的页面, 包含"首页,未读消息,收藏,赞"等导航, 也包括用户组的导航
 //
    Created by ChenLetian on 16/4/25.
 
+// 基础导航
 div.nav_list
     ul.nav_list
         -
@@ -12,7 +14,11 @@ div.nav_list
             li.vertical
                 a.always_white.no_decoration(href=item["href"])= item["title"]
     div.clear
+
+// 分割线
 div.border
+
+// 用户组的导航
 div.nav_list
     ul.nav_list
         each item in groupList
