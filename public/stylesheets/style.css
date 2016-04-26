@@ -263,6 +263,10 @@ li.vertical a:hover {
     width: 50px;
 }
 
+.talking div.thumb_image img {
+    border-radius: 50%;
+}
+
 .talking div.detail {
     margin: 0 0 0 60px;
     padding: 0;
