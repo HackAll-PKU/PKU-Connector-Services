@@ -13,7 +13,69 @@ body {
     background-size: auto auto;
 }
 
-.center1000 {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+    margin: 0;
+    padding: 0;
+}
+
+/* some classes that can be used  */
+div.center1000 {
     width: 1000px;
     margin: 0 auto;
 }
@@ -22,7 +84,7 @@ div.clear {
     clear: both;
 }
 
-.clear_fix:after {
+div.clear_fix:after {
     content: ".";
     display: block;
     height: 0;
@@ -46,6 +108,26 @@ a.always_inherit, a.always_inherit:hover, a.always_inherit:visited, a.always_inh
     color: inherit;
 }
 
+.font-size12 {
+    font-size: 12px;
+}
+
+.font-size18 {
+    font-size: 18px;
+}
+
+.font-size25 {
+    font-size: 25px;
+}
+
+.background_dark_blue {
+    background-color: #071a37;
+}
+
+.color_light_gray {
+    color: #b0bdd0;
+}
+
 /* 导航栏 */
 .global_nav {
     position: fixed;
@@ -60,9 +142,9 @@ a.always_inherit, a.always_inherit:hover, a.always_inherit:visited, a.always_inh
     display: block;
 }
 
+/* logo */
 .logo_large {
     float: left;
-    width: auto;
     height: 48px;
 }
 
@@ -73,6 +155,7 @@ a.always_inherit, a.always_inherit:hover, a.always_inherit:visited, a.always_inh
     overflow: hidden;
 }
 
+/* 搜索框 */
 div.search {
     float: left;
     margin: 9px 0 9px 15px;
@@ -98,6 +181,7 @@ div.search span.placeholder, div.search input {
     border: none;
 }
 
+/* 导航的列表 */
 .global_nav .right_position {
     float: right;
 }
@@ -111,14 +195,11 @@ div.search span.placeholder, div.search input {
 
 ul.nav_list {
     list-style: none;
-    padding: 0;
-    margin: 0;
     float: left;
 }
 
 ul.nav_list li.horizontal, ul.nav_list li.vertical {
     float: left;
-    position: relative;
     margin-left: 30px;
 }
 
@@ -153,18 +234,20 @@ li.vertical a:hover {
 /* 左栏 */
 .PC_left {
     display: inline-block;
-    height: auto;
     width: 150px;
     margin-top: 10px;
-    float:left
+    float:left;
+    position: fixed;
 }
 
+/* 左栏中的导航栏 */
 .PC_left div.nav_list {
     display: block;
     width: 100%;
     margin: 10px 0;
 }
 
+/* 左栏中的分隔线 */
 .PC_left .border {
     border-top: 1px solid #22456b;
 }
@@ -173,13 +256,12 @@ li.vertical a:hover {
 .PC_main {
     display: inline-block;
     width: 600px;
-    margin: 10px 0;
+    margin: 10px 0 10px 150px;
     float: left;
 }
 
 /* say_something */
 .say_something {
-    background-color: #071a37;
     margin: 0 0 10px 0;
     padding: 10px 10px 0 10px;
     display: block;
@@ -189,16 +271,7 @@ li.vertical a:hover {
     position: relative;
     overflow: hidden;
     height: 30px;
-    color: rgb(171, 211, 255);
-    font-family: "WBSwficon", sans-serif;
-}
-
-.say_something div.title span.small {
-    font-size: 18px;
-}
-
-.say_something div.title span.big {
-    font-size: 25px;
+    color: skyblue;
 }
 
 .say_something div.input {
@@ -210,12 +283,8 @@ li.vertical a:hover {
 
 .say_something div.input textarea {
     background-color: transparent;
-    color: #b0bdd0;
     height: 80px;
-    font-size: 18px;
     width: 100%;
-    padding: 0;
-    margin: 0;
     outline: none;
     border: none;
     overflow: hidden;
@@ -262,7 +331,6 @@ li.vertical a:hover {
 
 .talking {
     margin-top: 10px;
-    background-color: #071a37;
     padding: 20px 20px 4px 20px;
 }
 
@@ -283,18 +351,15 @@ li.vertical a:hover {
 .talking div.detail div.username {
     margin-bottom: 7px;
     padding: 5px 0 0 0;
-    color: #b0bdd0;
 }
 
 .talking div.detail div.info {
     margin-bottom: 2px;
     color: #38547b;
-    font-size: 12px;
 }
 
 .talking div.detail div.text {
     margin-bottom: 2px;
-    color: #b0bdd0;
 }
 
 /* 右栏 */
@@ -308,7 +373,6 @@ li.vertical a:hover {
 /*  用户信息的小框  */
 .person_info_box {
     margin: 0 0 10px 0;
-    background-color: #071a37;
 }
 
 .person_info_box .image_box {
@@ -352,12 +416,10 @@ li.vertical a:hover {
     max-width: 114px;
     display: inline-block;
     overflow: hidden;
-    font-size: 14px;
     font-weight: bold;
     text-overflow: ellipsis;
     white-space: nowrap;
     vertical-align: middle;
-    color: #b0bdd0;
     text-decoration: none;
 }
 
@@ -367,7 +429,6 @@ li.vertical a:hover {
 
 .person_info_box .inner_info_box ul.user_attention {
     overflow: hidden;
-    font-size: 18px;
     padding: 0;
     width: 182px;
     margin: 10px auto 0;
@@ -386,7 +447,6 @@ ul.user_attention li:last-child {
 }
 
 ul.user_attention li a {
-    color: #b0bdd0;
     text-decoration: none;
     display: block;
 }
@@ -406,12 +466,10 @@ ul.user_attention li a span {
     display: block;
     color: #38547b;
     text-decoration: none;
-    font-size: 12px;
 }
 
 /* U Maybe Know */
 .maybe_know {
-    background-color: #071a37;
     width:230px;
     position: relative;
 }
@@ -427,7 +485,6 @@ ul.user_attention li a span {
 .maybe_know .title_box h3 {
     font-size: 150%;
     font-weight: normal;
-    color: #b0bdd0;
     text-decoration: none;
     margin: 0;
 }
@@ -462,7 +519,6 @@ ul.user_attention li a span {
 .maybe_know .inner_box .one_friend .detail h5 {
     font-size: 120%;
     font-weight: normal;
-    color: #b0bdd0;
     text-decoration: none;
     margin: 0;
 }
@@ -470,7 +526,6 @@ ul.user_attention li a span {
 .maybe_know .inner_box .one_friend .detail span.number {
     font-size: 100%;
     font-weight: bold;
-    color: #b0bdd0;
     text-decoration: none;
 }
 
@@ -486,7 +541,6 @@ ul.user_attention li a span {
     width: 100%;
     text-align: center;
     background-color: #041142;
-    color: #b0bdd0;
     clear: both;
     margin: 10px auto 0;
     padding: 10px 0;

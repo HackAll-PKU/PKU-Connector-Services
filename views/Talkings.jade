@@ -4,12 +4,12 @@
 
 div.talking_whole
     each talking in talkingList
-        div.talking
+        div.talking.background_dark_blue
             div.thumb_image
                 img(src=talking["thumbImg"])
             div.detail
-                div.username
+                div.username.color_light_gray
                     a.no_decoration.always_inherit= talking["username"]
-                div.info= talking["timestamp"]
-                div.text= talking["text"]
+                div.info.font-size12= talking["timestamp"]
+                div.text.color_light_gray= talking["text"]
             div.clear

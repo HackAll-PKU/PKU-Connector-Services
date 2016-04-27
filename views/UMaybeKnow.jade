@@ -2,15 +2,15 @@
 //
    Created by ChenLetian on 16/4/27.
 
-.maybe_know
+.maybe_know.background_dark_blue
     .title_box
-        h3 U maybe know...
+        h3.color_light_gray U maybe know...
     .inner_box.clear_fix
         each person in maybeKnowList
             .one_friend.clear_fix
                 .thumb_image
                     img(src=person.thumbImg)
                 .detail
-                    h5= person.username
-                    span.number= person.numberOfCommmonFriends
+                    h5.color_light_gray= person.username
+                    span.number.color_light_gray= person.numberOfCommmonFriends
                     span.words  common friends
