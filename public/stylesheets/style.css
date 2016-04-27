@@ -1,7 +1,7 @@
 /* global settings */
 body {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     font: 14px Helvetica Neue, 方正楷体简体, 方正喵呜体, 方正综艺简体, Arial, sans-serif;
     background-color: #0d3b6c;
 }
@@ -20,6 +20,14 @@ body {
 
 div.clear {
     clear: both;
+}
+
+.clear_fix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
 }
 
 a.no_decoration {
@@ -164,7 +172,7 @@ li.vertical a:hover {
 /* 主内容页面 */
 .PC_main {
     display: inline-block;
-    width: 700px;
+    width: 600px;
     margin: 10px 0;
     float: left;
 }
@@ -292,9 +300,112 @@ li.vertical a:hover {
 /* 右栏 */
 .PC_right {
     display: inline-block;
-    width: 150px;
-    margin-top: 10px;
+    width: 230px;
+    margin: 10px 0 0 10px;
     float: left;
+}
+
+.person_info_box {
+    margin: 0 0 10px 0;
+    background-color: #071a37;
+}
+
+.person_info_box .image_box {
+    height: 75px;
+    z-index: 1;
+    display: block;
+    position: relative;
+    background: url("../images/demo_self_background.jpg") no-repeat;
+}
+
+.person_info_box .image_box .thumb_image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin-left: -30px;
+    padding: 3px;
+}
+
+.person_info_box .image_box .thumb_image img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+
+.person_info_box .inner_info_box {
+    padding: 16px 16px 9px 16px;
+}
+
+.person_info_box .inner_info_box .name_box {
+    height: 16px;
+    line-height: 16px;
+    padding-top: 5px;
+    text-align: center;
+}
+
+.person_info_box .inner_info_box .name_box a {
+    max-width: 114px;
+    display: inline-block;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+    color: #b0bdd0;
+    text-decoration: none;
+}
+
+.person_info_box .inner_info_box .name_box a:hover {
+    color: #257cde;
+}
+
+.person_info_box .inner_info_box ul.user_attention {
+    overflow: hidden;
+    font-size: 18px;
+    padding: 0;
+    width: 182px;
+    margin: 10px auto 0;
+}
+
+ul.user_attention li {
+    float: left;
+    width: 60px;
+    text-align: center;
+    border-right: solid 1px;
+    border-color: #162e4f;
+}
+
+ul.user_attention li:last-child {
+    border: 0;
+}
+
+ul.user_attention li a {
+    color: #b0bdd0;
+    text-decoration: none;
+    display: block;
+}
+
+ul.user_attention li a:hover {
+    color: #257cde;
+}
+
+ul.user_attention li a strong {
+    display: block;
+    font-weight: bold;
+    width: 60px;
+    overflow: hidden;
+}
+
+ul.user_attention li a span {
+    display: block;
+    color: #38547b;
+    text-decoration: none;
+    font-size: 12px;
 }
 
 /* 脚注 */
