@@ -305,6 +305,7 @@ li.vertical a:hover {
     float: left;
 }
 
+/*  用户信息的小框  */
 .person_info_box {
     margin: 0 0 10px 0;
     background-color: #071a37;
@@ -415,6 +416,6 @@ ul.user_attention li a span {
     background-color: #041142;
     color: #b0bdd0;
     clear: both;
-    margin: 10px auto;
+    margin: 10px auto 0;
     padding: 10px 0;
 }
