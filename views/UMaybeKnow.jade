@@ -2,3 +2,15 @@
 //
    Created by ChenLetian on 16/4/27.
 
+.maybe_know
+    .title_box
+        h3 U maybe know...
+    .inner_box.clear_fix
+        each person in maybeKnowList
+            .one_friend.clear_fix
+                .thumb_image
+                    img(src=person.thumbImg)
+                .detail
+                    h5= person.username
+                    span.number= person.numberOfCommmonFriends
+                    span.words  common friends

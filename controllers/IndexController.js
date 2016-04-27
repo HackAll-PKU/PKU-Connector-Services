@@ -15,6 +15,8 @@ exports.indexPage = function (req, res, next) {
         {username: "胡顺昕", text: "啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈", timestamp: "2016/4/20 16:10", thumbImg: "/images/demo_thumb_image.jpeg"},
         {username: "胡顺昕", text: "啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈", timestamp: "2016/4/20 16:10", thumbImg: "/images/demo_thumb_image.jpeg"},
         {username: "胡顺昕", text: "啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈", timestamp: "2016/4/20 16:10", thumbImg: "/images/demo_thumb_image.jpeg"}];
-    var data = {title: title, username: username, groupList: groupList, talkingList: talkingList}
+    var maybeKnowList = [{username: "胡顺昕昕昕", thumbImg: "/images/demo_thumb_image.jpeg", numberOfCommmonFriends: 5},
+        {username: "胡顺昕昕昕昕昕", thumbImg: "/images/demo_thumb_image.jpeg", numberOfCommmonFriends: 3}]
+    var data = {title: title, username: username, groupList: groupList, talkingList: talkingList, maybeKnowList: maybeKnowList}
     res.render('Index', {args: JSON.stringify(data)})
 }

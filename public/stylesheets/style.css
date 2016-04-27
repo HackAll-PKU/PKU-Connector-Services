@@ -409,6 +409,78 @@ ul.user_attention li a span {
     font-size: 12px;
 }
 
+/* U Maybe Know */
+.maybe_know {
+    background-color: #071a37;
+    width:230px;
+    position: relative;
+}
+
+.maybe_know .title_box {
+    border-bottom: solid 1px #122642;
+    position: relative;
+    height: 38px;
+    padding: 0 16px;
+    line-height: 38px;
+}
+
+.maybe_know .title_box h3 {
+    font-size: 150%;
+    font-weight: normal;
+    color: #b0bdd0;
+    text-decoration: none;
+    margin: 0;
+}
+
+.maybe_know .inner_box {
+    padding: 0 16px;
+}
+
+.maybe_know .inner_box .one_friend {
+    margin: 10px 0;
+}
+
+.maybe_know .inner_box .one_friend .thumb_image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    float: left;
+}
+
+.maybe_know .inner_box .one_friend .thumb_image img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.maybe_know .inner_box .one_friend .detail {
+    float: left;
+    width: 140px;
+    margin: 0 0 0 10px;
+}
+
+.maybe_know .inner_box .one_friend .detail h5 {
+    font-size: 120%;
+    font-weight: normal;
+    color: #b0bdd0;
+    text-decoration: none;
+    margin: 0;
+}
+
+.maybe_know .inner_box .one_friend .detail span.number {
+    font-size: 100%;
+    font-weight: bold;
+    color: #b0bdd0;
+    text-decoration: none;
+}
+
+.maybe_know .inner_box .one_friend .detail span.words {
+    font-size: 100%;
+    font-weight: normal;
+    color: #38547b;
+    text-decoration: none;
+}
+
 /* 脚注 */
 .global_footer {
     width: 100%;
