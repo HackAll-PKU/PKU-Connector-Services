@@ -181,6 +181,10 @@ div.search span.placeholder, div.search input {
     border: none;
 }
 
+input, textarea{
+    outline: none;
+}
+
 /* 导航的列表 */
 .global_nav .right_position {
     float: right;
