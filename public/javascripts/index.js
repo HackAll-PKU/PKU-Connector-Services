@@ -3,13 +3,10 @@
  */
 $(document).ready(function () {
     $("input#search_input").focus(function () {
-        //$("span.placeholder").text("");
-        $("span.placeholder")[0].style.visibility = "hidden";
+        $("span.placeholder").hide();
     });
     $("input#search_input").blur(function () {
-        //$(this).val("");
         if ($(this)[0].value == "")
-            $("span.placeholder")[0].style.visibility = "visible";
-            //$("span.placeholder").text("searching");
+            $("span.placeholder").show();
     });
 })
