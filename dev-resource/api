@@ -12,9 +12,20 @@ api通则:
 /********************************
 *               User            *
 *********************************/
+陈乐天
 
 POST /user
-    参数: uname, password, thumbImg, gender
+    参数:
+        uname
+        password
+        nickname
+        avatar(可选,若无则使用默认头像URL)
+        background(可选,若无则使用默认背景URL)
+        gender(可选)
+        signature(可选)
+        birthday(可选)
+        department(可选)
+        enrollment_year(可选)
     JSON返回uid
 
 GET /user/:uid
@@ -24,9 +35,17 @@ GET /user/:uid
 * User Object *
 ***************
 包含
+    uid
     uname
-    thumbImg
-    gender
+    password
+    nickname
+    avatar(可选,若无则使用默认头像URL)
+    background(可选,若无则使用默认背景URL)
+    gender(可选)
+    signature(可选)
+    birthday(可选)
+    department(可选)
+    enrollment_year(可选)
 
 /*******************************
 *             关注              *
@@ -47,6 +66,7 @@ DELETE /follow/group/:gid
 /********************************
 *               认证             *
 *********************************/
+陈乐天
 
 POST /login
     JSON返回token
@@ -54,18 +74,21 @@ POST /login
 /********************************
 *            Talking            *
 *********************************/
+寇雨婷
 
 ******************
 * Talking Object *
 ******************
 包含
+    tid
     text
     image
+    uid
     gid
-    tid
+    timestamp
 
 GET /talkings
-    JSON返回所有关注人的talking数据
+    JSON返回所有关注人以及group的talking数据
 
 POST /talkings
     参数:
@@ -80,10 +103,13 @@ DELETE /talkings/:tid
 /********************************
 *             Comment           *
 *********************************/
+胡顺昕
 
 POST /comment
     参数:
         text
+        talking_tid
+        parent_cid(可选)
     JSON返回cid
 
 DELETE /comment/cid
@@ -92,6 +118,7 @@ DELETE /comment/cid
 /********************************
 *             Group             *
 *********************************/
+陈乐天
 
 GET /group/:gid
     JSON返回gid所对应用户组的所有信息
@@ -99,7 +126,7 @@ GET /group/:gid
 POST /group
     参数:
         gname组名
-        thumbImg
+        avatar
     JSON返回gid
 
 /*********************************
