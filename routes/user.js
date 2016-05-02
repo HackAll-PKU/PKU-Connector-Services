@@ -10,4 +10,9 @@ var userController = require("../controllers/UserController.js");
  */
 router.post('/api/v1/user', userController.addNewUser);
 
+/**
+ * 查询用户详细信息
+ */
+router.get('/api/v1/user/:uid', userController.getUserInfo);
+
 module.exports = router;

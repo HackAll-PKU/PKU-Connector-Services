@@ -19,25 +19,43 @@ function User(uid, uname, password, nickname, avatar, background, gender, signat
     this.enrollmentYear = enrollmentYear;
 }
 
-User.prototype.addUserToDatabase = function(completionHandler) {
+User.prototype.addUserToDatabase = function (completionHandler) {
     var requestUser = this;
     if (!(requestUser.uname && requestUser.password)) {
-        completionHandler({code:400, msg: "用户名或密码为空"}, null);
+        completionHandler({code: 400, msg: "用户名或密码为空"}, null);
         return;
     }
-    pool.getConnection(function (err, conncetion) {
-        if (err) completionHandler({code:400, msg: err.code}, null);
-        conncetion.query('INSERT INTO `PKU-Connector`.`user` (`uname`, `password`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    pool.getConnection(function (err, connection) {
+        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        connection.query('INSERT INTO `PKU-Connector`.`user` (`uname`, `password`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [requestUser.uname, requestUser.password, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear],
             function (err, result) {
-                conncetion.release();
+                connection.release();
                 if (err)
-                    completionHandler({code:400, msg: err.code}, null);
+                    completionHandler({code: 400, msg: err.code}, null);
                 else
                     completionHandler(null, result);
             });
     });
 };
 
+User.prototype.getUserInfo = function (completionHandler) {
+    var requestUid = this.uid;
+    if (!requestUid) {
+        completionHandler({code: 400, msg: "uid为空"}, null);
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        connection.query('SELECT * FROM `PKU-Connector`.`user` WHERE `uid` = ?',
+            [requestUid],
+            function (err, rows) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else
+                    completionHandler(err, rows[0]);
+            });
+    });
+};
 
 exports.User = User;
