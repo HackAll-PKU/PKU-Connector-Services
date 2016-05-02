@@ -10,7 +10,7 @@ exports.addNewUser = function (req, res) {
         req.body.department, req.body.enrollmentYear);
     user.addUserToDatabase(function(err, result) {
         if (err)
-            res.status(400).json({msg: err.code});
+            res.status(err.code).json({msg: err.msg});
         else
             res.status(201).json({msg: "OK", data: {uid: result.insertId}});
     });
