@@ -384,7 +384,7 @@ li.vertical a:hover {
     z-index: 1;
     display: block;
     position: relative;
-    background: url("../images/demo_self_background.jpg") no-repeat;
+    background: url("../images/default_background.jpg") no-repeat;
 }
 
 .person_info_box .image_box .thumb_image {

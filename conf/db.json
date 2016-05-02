@@ -1,3 +1,6 @@
 {
-
+  "connectionLimit" : 10,
+  "host"            : "localhost",
+  "user"            : "PKU-Connector",
+  "password"        : "PKU-Connector-HackAll"
 }

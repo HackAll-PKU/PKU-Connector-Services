@@ -5,9 +5,9 @@ api通则:
     base URL: http://pikkacho.cn/api/v1
     所有的请求都要带token(除了登陆)
 
-    所有JSON返回外面都会包一层code和msg,data
-    一般情况下code=0为正常,msg为OK,data中为所要的数据
-    若code不为0时,msg中包含出错信息,没有data域
+    所有JSON返回外面都会包一层msg,data
+    当HTTP状态码为2xx时为正常,msg为OK,data中为所要的数据
+    当HTTP状态码非2xx时为非正常,msg中包含出错信息,没有data域
 
 /********************************
 *               User            *
