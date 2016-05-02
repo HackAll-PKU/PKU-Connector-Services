@@ -5,7 +5,8 @@
 var pool = require("./BaseModel.js");
 var defaultConf = require("../conf/default.json");
 
-function User(uname, password, nickname, avatar, background, gender, signature, birthday, department, enrollmentYear) {
+function User(uid, uname, password, nickname, avatar, background, gender, signature, birthday, department, enrollmentYear) {
+    this.uid = uid;
     this.uname = uname;
     this.password = password;
     this.nickname = nickname || uname;
@@ -18,13 +19,14 @@ function User(uname, password, nickname, avatar, background, gender, signature, 
     this.enrollmentYear = enrollmentYear;
 }
 
-User.prototype.addUserToDatabase = function (completionHandler) {
+User.prototype.addUserToDatabase = function(completionHandler) {
     var requestUser = this;
     pool.getConnection(function (err, conncetion) {
         if (err) completionHandler(err, null);
         conncetion.query('INSERT INTO `PKU-Connector`.`user` (`uname`, `password`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [requestUser.uname, requestUser.password, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear],
             function (err, result) {
+                conncetion.release();
                 if (err)
                     completionHandler(err, null);
                 else
