@@ -53,7 +53,32 @@ User.prototype.getUserInfo = function (completionHandler) {
                 if (err)
                     completionHandler({code: 400, msg: err.code}, null);
                 else
-                    completionHandler(err, rows[0]);
+                    completionHandler(null, rows[0]);
+            });
+    });
+};
+
+User.prototype.updateUserInfo = function (completionHandler) {
+    var requestUser = this;
+    if (!requestUser.uid) {
+        completionHandler({code: 400, msg: "uid为空"}, null);
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        connection.query("UPDATE `PKU-Connector`.`user` SET `uname` = ?, `nickname` = ?, `avatar` = ?, `background` = ?, `gender` = ?, `signature` = ?, `birthday` = ?, `department` = ?, `enrollment_year` = ? WHERE `uid`=?",
+            [requestUser.uname, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear, requestUser.uid],
+            function (err, result) {
+                connection.release();
+                console.log(err);
+                console.log(result);
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else if (result.affectedRows > 0) {
+                    completionHandler(null, result);
+                }
+                else {
+                    completionHandler({code: 400, msg: "没有此用户"}, null)
+                }
             });
     });
 };

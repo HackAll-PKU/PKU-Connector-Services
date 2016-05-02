@@ -31,6 +31,12 @@ POST /user
 GET /user/:uid
     JSON返回uid所对应的个人所有信息
 
+PUT /user/:uid
+    参数:
+        同POST /user
+        暂不支持密码修改
+    JSON无返回data
+
 ***************
 * User Object *
 ***************

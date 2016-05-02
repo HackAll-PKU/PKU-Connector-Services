@@ -25,3 +25,15 @@ exports.getUserInfo = function (req, res) {
             res.json({msg: "OK", data: result});
     });
 };
+
+exports.updateUserInfo = function (req, res) {
+    var user = new model.User(req.params.uid, req.body.uname, req.body.password, req.body.nickname, req.body.avatar,
+        req.body.background, req.body.gender, req.body.signature, req.body.birthday,
+        req.body.department, req.body.enrollmentYear);
+    user.updateUserInfo(function (err, result) {
+        if (err)
+            res.status(err.code).json({msg: err.msg});
+        else
+            res.json({msg: "OK"});
+    });
+};

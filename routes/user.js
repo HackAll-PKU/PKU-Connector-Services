@@ -15,4 +15,9 @@ router.post('/api/v1/user', userController.addNewUser);
  */
 router.get('/api/v1/user/:uid', userController.getUserInfo);
 
+/**
+ * 更新用户信息(除了密码之外的属性都能够更改)
+ */
+router.put('/api/v1/user/:uid' ,userController.updateUserInfo);
+
 module.exports = router;
