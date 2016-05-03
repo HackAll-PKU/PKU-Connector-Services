@@ -2,5 +2,9 @@
   {
     "path": "/api/v1/user",
     "method": "POST"
+  },
+  {
+    "path": "/",
+    "method": "GET"
   }
 ]

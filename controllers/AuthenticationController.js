@@ -79,7 +79,7 @@ exports.verifyToken = function (req, res, next) {
  * @param req 当前请求
  * @returns {boolean} 是否需要授权
  */
-exports.needAuthenticated = function needAuthenticated(req) {
+function needAuthenticated(req) {
     var doNotNeedAuthenticated = require("./DoNotNeedAuthenticated.json");
     for (var index in doNotNeedAuthenticated) {
         var noAuthenticatedRequest = doNotNeedAuthenticated[index];
@@ -89,3 +89,4 @@ exports.needAuthenticated = function needAuthenticated(req) {
     }
     return true;
 };
+exports.needAuthenticated = needAuthenticated;
