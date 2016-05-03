@@ -1,5 +1,5 @@
 api版本
-    v0.1
+    v0.2
 
 api通则:
     base URL: http://pikkacho.cn/api/v1
@@ -99,6 +99,9 @@ POST /authentication
 GET /talkings
     JSON返回所有关注人以及group的talking数据
 
+GET /talking/:tid
+    JSON返回Talking Object
+
 POST /talkings
     参数:
         text
@@ -120,6 +123,9 @@ POST /comment
         talking_tid
         parent_cid(可选)
     JSON返回cid
+
+GET /comment/:cid
+    JSON返回comment object
 
 DELETE /comment/cid
     JSON返回
