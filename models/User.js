@@ -52,8 +52,10 @@ User.prototype.getUserInfo = function (completionHandler) {
                 connection.release();
                 if (err)
                     completionHandler({code: 400, msg: err.code}, null);
-                else
+                else if (rows.length > 0)
                     completionHandler(null, rows[0]);
+                else
+                    completionHandler({code: 400, msg: "没有此用户"}, null);
             });
     });
 };
