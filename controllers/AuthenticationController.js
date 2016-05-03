@@ -88,5 +88,5 @@ function needAuthenticated(req) {
         }
     }
     return true;
-};
+}
 exports.needAuthenticated = needAuthenticated;

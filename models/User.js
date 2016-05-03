@@ -45,16 +45,19 @@ User.prototype.addUserToDatabase = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
-        connection.query('INSERT INTO `PKU-Connector`.`user` (`uname`, `password`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [requestUser.uname, requestUser.password, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear],
-            function (err, result) {
-                connection.release();
-                if (err)
-                    completionHandler({code: 400, msg: err.code}, null);
-                else
-                    completionHandler(null, result);
-            });
+        if (err)
+            completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        else {
+            connection.query('INSERT INTO `PKU-Connector`.`user` (`uname`, `password`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [requestUser.uname, requestUser.password, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear],
+                function (err, result) {
+                    connection.release();
+                    if (err)
+                        completionHandler({code: 400, msg: err.code}, null);
+                    else
+                        completionHandler(null, result);
+                });
+        }
     });
 };
 
