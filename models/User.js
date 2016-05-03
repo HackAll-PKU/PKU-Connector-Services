@@ -71,16 +71,34 @@ User.prototype.updateUserInfo = function (completionHandler) {
             [requestUser.uname, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear, requestUser.uid],
             function (err, result) {
                 connection.release();
-                console.log(err);
-                console.log(result);
                 if (err)
                     completionHandler({code: 400, msg: err.code}, null);
-                else if (result.affectedRows > 0) {
+                else if (result.affectedRows > 0)
                     completionHandler(null, result);
-                }
-                else {
-                    completionHandler({code: 400, msg: "没有此用户"}, null)
-                }
+                else
+                    completionHandler({code: 400, msg: "没有此用户"}, null);
+            });
+    });
+};
+
+User.prototype.authenticate = function (completionHandler) {
+    var requestUname = this.uname;
+    var requestPassword = this.password;
+    if (!(requestUname && requestPassword)) {
+        completionHandler({code: 400, msg: "用户名或密码为空"}, null);
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        connection.query("SELECT uid, password FROM `PKU-Connector`.`user` WHERE `uname` = ?",
+            [requestUname],
+            function (err, rows) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else if (rows.length > 0)
+                    completionHandler(null, rows[0]);
+                else
+                    completionHandler({code: 400, msg: "没有此用户"}, null);
             });
     });
 };

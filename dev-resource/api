@@ -74,7 +74,10 @@ DELETE /follow/group/:gid
 *********************************/
 陈乐天
 
-POST /login
+POST /authentication
+    参数:
+        uname
+        password
     JSON返回token
 
 /********************************
