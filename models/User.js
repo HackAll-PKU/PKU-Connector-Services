@@ -5,6 +5,21 @@
 var pool = require("./BaseModel.js");
 var defaultConf = require("../conf/default.json");
 
+/**
+ * 用户信息构造方法
+ * @param uid uid
+ * @param uname 用户名
+ * @param password 密码
+ * @param nickname 昵称
+ * @param avatar 头像URL
+ * @param background 背景URL
+ * @param gender 性别
+ * @param signature 个性签名
+ * @param birthday 生日
+ * @param department 院系
+ * @param enrollmentYear 入学年份
+ * @constructor
+ */
 function User(uid, uname, password, nickname, avatar, background, gender, signature, birthday, department, enrollmentYear) {
     this.uid = uid;
     this.uname = uname;
@@ -19,6 +34,10 @@ function User(uid, uname, password, nickname, avatar, background, gender, signat
     this.enrollmentYear = enrollmentYear;
 }
 
+/**
+ * 添加新用户
+ * @param completionHandler 返回闭包,包含err, result
+ */
 User.prototype.addUserToDatabase = function (completionHandler) {
     var requestUser = this;
     if (!(requestUser.uname && requestUser.password)) {
@@ -39,6 +58,10 @@ User.prototype.addUserToDatabase = function (completionHandler) {
     });
 };
 
+/**
+ * 获取用户个人信息
+ * @param completionHandler 返回闭包,包含err和rows
+ */
 User.prototype.getUserInfo = function (completionHandler) {
     var requestUid = this.uid;
     if (!requestUid) {
@@ -46,7 +69,7 @@ User.prototype.getUserInfo = function (completionHandler) {
     }
     pool.getConnection(function (err, connection) {
         if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
-        connection.query('SELECT `uname`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year` FROM `PKU-Connector`.`user` WHERE `uid` = ?',
+        connection.query('SELECT `uid`, `uname`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year` FROM `PKU-Connector`.`user` WHERE `uid` = ?',
             [requestUid],
             function (err, rows) {
                 connection.release();
@@ -60,7 +83,11 @@ User.prototype.getUserInfo = function (completionHandler) {
     });
 };
 
-User.prototype.updateUserInfo = function (completionHandler) {
+/**
+ * 更新用户个人信息
+ * @param completionHandler 返回闭包,包含err和result
+ */
+User.prototype.modifyUserInfo = function (completionHandler) {
     var requestUser = this;
     if (!requestUser.uid) {
         completionHandler({code: 400, msg: "uid为空"}, null);
@@ -81,6 +108,10 @@ User.prototype.updateUserInfo = function (completionHandler) {
     });
 };
 
+/**
+ * 验证用户名密码是否正确
+ * @param completionHandler 返回闭包,包含err和rows
+ */
 User.prototype.authenticate = function (completionHandler) {
     var requestUname = this.uname;
     var requestPassword = this.password;

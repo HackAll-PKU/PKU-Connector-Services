@@ -4,6 +4,9 @@
 
 var model = require("../models/User.js");
 
+/**
+ * 添加新用户
+ */
 exports.addNewUser = function (req, res) {
     var user = new model.User(null, req.body.uname, req.body.password, req.body.nickname, req.body.avatar,
         req.body.background, req.body.gender, req.body.signature, req.body.birthday,
@@ -16,6 +19,9 @@ exports.addNewUser = function (req, res) {
     });
 };
 
+/**
+ * 获取用户个人信息
+ */
 exports.getUserInfo = function (req, res) {
     var user = new model.User(req.params.uid);
     user.getUserInfo(function (err, result) {
@@ -26,7 +32,10 @@ exports.getUserInfo = function (req, res) {
     });
 };
 
-exports.updateUserInfo = function (req, res) {
+/**
+ * 修改用户个人信息
+ */
+exports.modifyUserInfo = function (req, res) {
     if (req.params.uid != req.tokenInfo.uid) {
         res.status(403).json({msg: "你没有权限修改此个人信息"});
         return;
@@ -34,7 +43,7 @@ exports.updateUserInfo = function (req, res) {
     var user = new model.User(req.params.uid, req.body.uname, req.body.password, req.body.nickname, req.body.avatar,
         req.body.background, req.body.gender, req.body.signature, req.body.birthday,
         req.body.department, req.body.enrollmentYear);
-    user.updateUserInfo(function (err, result) {
+    user.modifyUserInfo(function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else

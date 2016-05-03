@@ -6,6 +6,9 @@ var model = require("../models/User.js");
 var jwt = require('jsonwebtoken');
 var tokenConf = require('../conf/token.json');
 
+/**
+ * 验证用户名密码,成功则颁发token
+ */
 exports.authenticateUser = function (req, res) {
     var uname = req.body.uname;
     var password = req.body.password;
@@ -22,6 +25,9 @@ exports.authenticateUser = function (req, res) {
     });
 };
 
+/**
+ *  验证token,若验证成功则将uid和uname存入req.tokenInfo
+ */
 exports.verifyToken = function (req, res, next) {
     var bearerToken;
     var bearerHeader = req.headers["authorization"];
@@ -68,7 +74,12 @@ exports.verifyToken = function (req, res, next) {
     });
 };
 
-function needAuthenticated(req) {
+/**
+ * 判断当前请求是否需要授权
+ * @param req 当前请求
+ * @returns {boolean} 是否需要授权
+ */
+exports.needAuthenticated = function needAuthenticated(req) {
     var doNotNeedAuthenticated = require("./DoNotNeedAuthenticated.json");
     for (var index in doNotNeedAuthenticated) {
         var noAuthenticatedRequest = doNotNeedAuthenticated[index];
@@ -77,4 +88,4 @@ function needAuthenticated(req) {
         }
     }
     return true;
-}
+};

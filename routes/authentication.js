@@ -11,7 +11,7 @@ var authenticationController = require("../controllers/AuthenticationController.
 router.post('/api/v1/authentication', authenticationController.authenticateUser);
 
 /**
- * 验证token,解析uid和uname
+ * 验证token,解析uid和uname,并存入req.tokenInfo
  */
 router.use(authenticationController.verifyToken);
 
