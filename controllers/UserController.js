@@ -27,6 +27,10 @@ exports.getUserInfo = function (req, res) {
 };
 
 exports.updateUserInfo = function (req, res) {
+    if (req.params.uid != req.tokenInfo.uid) {
+        res.status(403).json({msg: "你没有权限修改此个人信息"});
+        return;
+    }
     var user = new model.User(req.params.uid, req.body.uname, req.body.password, req.body.nickname, req.body.avatar,
         req.body.background, req.body.gender, req.body.signature, req.body.birthday,
         req.body.department, req.body.enrollmentYear);

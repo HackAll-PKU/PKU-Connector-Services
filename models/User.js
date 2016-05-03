@@ -46,7 +46,7 @@ User.prototype.getUserInfo = function (completionHandler) {
     }
     pool.getConnection(function (err, connection) {
         if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
-        connection.query('SELECT * FROM `PKU-Connector`.`user` WHERE `uid` = ?',
+        connection.query('SELECT `uname`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year` FROM `PKU-Connector`.`user` WHERE `uid` = ?',
             [requestUid],
             function (err, rows) {
                 connection.release();
