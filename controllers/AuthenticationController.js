@@ -33,7 +33,7 @@ exports.verifyToken = function (req, res, next) {
     var bearerHeader = req.headers["authorization"];
     if (typeof bearerHeader === 'undefined') {
         if (needAuthenticated(req))
-            res.status(403).json({msg: "尚未认证,无法使用此服务"});
+            res.status(401).json({msg: "尚未认证,无法使用此服务"});
         else
             next();
         return;
@@ -47,19 +47,19 @@ exports.verifyToken = function (req, res, next) {
             switch (err.name) {
                 case "TokenExpiredError":
                     if (needAuthenticated(req))
-                        res.status(403).json({msg: "token已失效,请重新登录"});
+                        res.status(401).json({msg: "token已失效,请重新登录"});
                     else
                         next();
                     break;
                 case "JsonWebTokenError":
                     if (needAuthenticated(req))
-                        res.status(403).json({msg: "token无效,请重新登录"});
+                        res.status(401).json({msg: "token无效,请重新登录"});
                     else
                         next();
                     break;
                 default:
                     if (needAuthenticated(req))
-                        res.status(403).json({msg: "token出现未知错误,请重新登录"});
+                        res.status(401).json({msg: "token出现未知错误,请重新登录"});
                     else
                         next();
             }
