@@ -12,6 +12,9 @@ module.exports = function(app) {
     // 用户相关的api模块
     var userHandler = require('./user.js');
     app.use(userHandler);
+    // 评论相关的api模块
+    var commentHandler = require('./comment.js');
+    app.use(commentHandler);
     // 在此处添加其他的路由器,按照功能划分
     var testHandler = require("./test.js");
     app.use(testHandler);
