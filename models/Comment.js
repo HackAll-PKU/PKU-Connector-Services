@@ -43,15 +43,24 @@ Comment.prototype.addCommentToDatabase = function (completionHandler) {
         if (err)
             completionHandler({code: 400, msg: "连接数据库错误"}, null);
         else {
-            connection.query('INSERT INTO `PKU-Connector`.`comment` (`text`, `talking_tid`, `user_uid`, `parent_cid`) VALUES (?, ?, ?, ?)',
-                [requestComment.text, requestComment.talking_tid, requestComment.user_uid, requestComment.parent_cid],
-                function (err, result) {
-                    connection.release();
-                    if (err)
-                        completionHandler({code: 400, msg: err.code}, null);
-                    else
-                        completionHandler(null, result);
+            if(requestComment.parent_cid){
+                connection.query('SELECT `parent_cid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?', [requestComment.parent_cid],
+                    function (err, rows) {
+                        if (!err && rows.length > 0 && rows[0]['parent_cid'])
+                            requestComment.parent_cid = rows[0]['parent_cid'];
+                        
+                        connection.query('INSERT INTO `PKU-Connector`.`comment` (`text`, `talking_tid`, `user_uid`, `parent_cid`) VALUES (?, ?, ?, ?)',
+                            [requestComment.text, requestComment.talking_tid, requestComment.user_uid, requestComment.parent_cid],
+                            function (err, result) {
+                                connection.release();
+                                if (err)
+                                    completionHandler({code: 400, msg: err.code}, null);
+                                else
+                                    completionHandler(null, result);
+                            });
                 });
+            }
+
         }
     });
 };
@@ -81,6 +90,10 @@ Comment.prototype.getComment = function (completionHandler) {
     });
 };
 
+/**
+ * 删除评论
+ * @param completionHandler 返回闭包,包含err和affectedRows
+ */
 Comment.prototype.deleteComment = function (completionHandler) {
     var requestCid = this.cid;
     var requestUid = this.user_uid;
@@ -130,6 +143,28 @@ Comment.prototype.deleteComment = function (completionHandler) {
                     }
                 );
                 connection.release();
+            });
+    });
+};
+
+/**
+ * 获取talking下的cid list
+ * @param completionHandler 返回闭包,包含err和rows
+ */
+Comment.prototype.getCommentListOfTalking = function (completionHandler) {
+    var requestTid = this.talking_tid;
+    if (!requestTid) {
+        completionHandler({code: 400, msg: "blank tid"}, null);
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        connection.query('SELECT `cid`, `parent_cid` FROM `PKU-Connector`.`comment` WHERE `talking_tid` = ?', [requestTid],
+            function (err, rows) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else 
+                    completionHandler(null, rows);
             });
     });
 };

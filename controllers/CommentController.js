@@ -41,3 +41,16 @@ exports.deleteComment = function (req, res) {
             res.json({msg: "OK", data: result}); 
     });
 };
+
+/**
+ * 获取talking下的cid list
+ */
+exports.getCommentListOfTalking = function (req, res) {
+    var comment = new model.Comment(null, null, req.params.tid);
+    comment.getCommentListOfTalking(function (err, result) {
+        if (err)
+            res.status(err.code).json({msg: err.msg});
+        else
+            res.json({msg: "OK", data: result});
+    });
+};

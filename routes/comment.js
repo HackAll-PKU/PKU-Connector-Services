@@ -21,4 +21,9 @@ router.get('/api/v1/comment/:cid', commentController.getComment);
  */
 router.delete('/api/v1/comment/:cid' ,commentController.deleteComment);
 
+/**
+ * 获取talking下的cid list
+ */
+router.get('/api/v1/comment/t/:tid', commentController.getCommentListOfTalking);
+
 module.exports = router;

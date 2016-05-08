@@ -121,7 +121,7 @@ POST /comment
     参数:
         text
         talking_tid
-        parent_cid(可选)//注意传参的时候如果被评论的评论有parent_cid则继承之(即只有2级评论)
+        parent_cid(可选)//注意如果被评论的评论有parent_cid则继承之(即只有2级评论)
     JSON返回cid
 
 GET /comment/:cid
@@ -129,6 +129,9 @@ GET /comment/:cid
 
 DELETE /comment/cid
     JSON返回删除的评论数(因为其子评论会同时删除)
+
+GET /comment/t/:tid
+    JSON返回tid下的cid list(目前返回的是cid和parent_cid)
 
 /********************************
 *             Group             *
