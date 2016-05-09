@@ -81,11 +81,17 @@ exports.verifyToken = function (req, res, next) {
  */
 function needAuthenticated(req) {
     var doNotNeedAuthenticated = require("./DoNotNeedAuthenticated.json");
-    for (var index in doNotNeedAuthenticated) {
+    outer: for (var index in doNotNeedAuthenticated) {
         var noAuthenticatedRequest = doNotNeedAuthenticated[index];
-        if ((noAuthenticatedRequest.path == req.path) && (noAuthenticatedRequest.method == req.method)) {
-            return false;
-        }
+        if (noAuthenticatedRequest.method != req.method) continue;
+
+        var noAuthArray = noAuthenticatedRequest.path.split('/');
+        var reqArray = req.path.split('/');
+        if (noAuthArray.length != reqArray.length) continue;
+        for (var i = 0; i < noAuthArray.length - 1; ++i)
+            if (noAuthArray[i] != reqArray[i]) continue outer;
+        if (noAuthArray[noAuthArray.length - 1].indexOf(':') > -1) return false;
+        else if (noAuthArray[noAuthArray.length - 1] == reqArray[reqArray.length - 1]) return false;
     }
     return true;
 }
