@@ -43,12 +43,12 @@ Comment.prototype.addCommentToDatabase = function (completionHandler) {
         if (err)
             completionHandler({code: 400, msg: "连接数据库错误"}, null);
         else {
-            if(requestComment.parent_cid){
+            if (requestComment.parent_cid) {
                 connection.query('SELECT `parent_cid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?', [requestComment.parent_cid],
                     function (err, rows) {
                         if (!err && rows.length > 0 && rows[0]['parent_cid'])
                             requestComment.parent_cid = rows[0]['parent_cid'];
-                        
+
                         connection.query('INSERT INTO `PKU-Connector`.`comment` (`text`, `talking_tid`, `user_uid`, `parent_cid`) VALUES (?, ?, ?, ?)',
                             [requestComment.text, requestComment.talking_tid, requestComment.user_uid, requestComment.parent_cid],
                             function (err, result) {
@@ -58,7 +58,17 @@ Comment.prototype.addCommentToDatabase = function (completionHandler) {
                                 else
                                     completionHandler(null, result);
                             });
-                });
+                    });
+            } else {
+                connection.query('INSERT INTO `PKU-Connector`.`comment` (`text`, `talking_tid`, `user_uid`) VALUES (?, ?, ?)',
+                    [requestComment.text, requestComment.talking_tid, requestComment.user_uid],
+                    function (err, result) {
+                        connection.release();
+                        if (err)
+                            completionHandler({code: 400, msg: err.code}, null);
+                        else
+                            completionHandler(null, result);
+                    });
             }
 
         }
@@ -105,7 +115,7 @@ Comment.prototype.deleteComment = function (completionHandler) {
         //查询被删评论的user_uid
         connection.query('SELECT `user_uid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?', [requestCid],
             function (err, rows) {
-                if (err){
+                if (err) {
                     connection.release();
                     completionHandler({code: 400, msg: err.code}, null);
                     return;
@@ -163,10 +173,46 @@ Comment.prototype.getCommentListOfTalking = function (completionHandler) {
                 connection.release();
                 if (err)
                     completionHandler({code: 400, msg: err.code}, null);
-                else 
+                else
                     completionHandler(null, rows);
             });
     });
+};
+
+/**
+ * 删除talking下所有评论(删除talking前调用,仅限内部调用)
+ * @param tid 要删除的tid
+ * @param completionHandler (err, affectedRows)
+ */
+exports.ensureSafeTalkingDeletion = function (tid, completionHandler) {
+    if (tid) {
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                completionHandler(1, null);
+                return;
+            }
+            var deletedCnt = 0;
+            connection.query('DELETE FROM `PKU-Connector`.`comment` WHERE `talking_tid` = ? AND `parent_cid` IS NOT NULL', [tid],
+                function (err, result) {
+                    if (err) {
+                        connection.release();
+                        completionHandler(1, null);
+                    } else {
+                        deletedCnt += result.affectedRows;
+                        connection.query('DELETE FROM `PKU-Connector`.`comment` WHERE `talking_tid` = ? AND `parent_cid` IS NULL', [tid],
+                            function (err, result) {
+                                connection.release();
+                                if (err) {
+                                    completionHandler(1, null);
+                                } else {
+                                    deletedCnt += result.affectedRows;
+                                    completionHandler(null, deletedCnt);
+                                }
+                        });
+                    }
+                });
+        });
+    }
 };
 
 exports.Comment = Comment;
