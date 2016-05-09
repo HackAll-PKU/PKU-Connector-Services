@@ -83,10 +83,7 @@ function needAuthenticated(req) {
     var doNotNeedAuthenticated = require("./DoNotNeedAuthenticated.json");
     for (var index in doNotNeedAuthenticated) {
         var noAuthenticatedRequest = doNotNeedAuthenticated[index];
-        if (noAuthenticatedRequest.method != req.method) continue;
-        
-        var noAuthRegex = new RegExp(noAuthenticatedRequest.path);
-        if (noAuthRegex.test(req.path)) return false;
+        if (noAuthenticatedRequest.method == req.method && new RegExp(noAuthenticatedRequest.path).test(req.path)) return false;
     }
     return true;
 }

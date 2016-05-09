@@ -12,7 +12,7 @@ var router = express.Router();
 //router.post('/test', authenticationController.authenticateUser);
 var comment = require("../models/Comment.js");
 router.post('/test/:tid', function (req, res) {
-    var result = comment.ensureSafeTalkingDeletion(req.params.tid, function (err, result) {
+    comment.ensureSafeTalkingDeletion(req.params.tid, function (err, result) {
         if (err)
             res.status(400).json({msg: "error"});
         else

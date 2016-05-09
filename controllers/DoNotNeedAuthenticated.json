@@ -8,11 +8,11 @@
     "method": "GET"
   },
   {
-    "path": "^/api/v1/comment/[0-9]*$",
+    "path": "^/api/v1/comment/\\d+$",
     "method": "GET"
   },
   {
-    "path": "^/api/v1/comment/t/[0-9]*$",
+    "path": "^/api/v1/comment/t/\\d+$",
     "method": "GET"
   }
 ]
