@@ -99,17 +99,23 @@ POST /authentication
 GET /talkings
     JSON返回所有关注人以及group的talking数据
 
+GET /talkings/:uid
+    JSON返回该用户的talking数据
+
 GET /talking/:tid
     JSON返回Talking Object
 
-POST /talkings
+DELETE /talking/:tid
+      JSON返回code和message
+
+POST /talking
     参数:
         text
         image
         gid(发表到哪个组)
     JSON返回tid
 
-DELETE /talkings/:tid
+DELETE /talking/:tid
     JSON返回
 
 /********************************
