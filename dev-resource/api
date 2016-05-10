@@ -127,6 +127,9 @@ POST /comment
 GET /comment/:cid
     JSON返回comment object
 
+GET /talking/:tid/comments
+    JSON返回tid对应的talking的所有comments
+
 DELETE /comment/cid
     JSON返回删除的评论数(因为其子评论会同时删除)
 
