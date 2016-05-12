@@ -15,7 +15,6 @@
     "path": "^/api/v1/comment/\\d+$",
     "method": "GET"
   },
-
   {
     "path": "^/api/v1/comment/t/\\d+$",
     "method": "GET"

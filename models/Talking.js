@@ -11,7 +11,6 @@ var defaultConf = require("../conf/default.json");
  * @param image 说说图片
  * @param uid 发布者的uid
  * @param gid talking所在group
- * @param timestamp 发布说说的时间信息
  */
 function Talking(tid, text, image, uid, gid) {
     this.tid = tid;

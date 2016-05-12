@@ -25,7 +25,7 @@ exports.getTalkingInfo = function (req, res) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
-            res.status(201).json({msg: "OK", data: result});
+            res.json({msg: "OK", data: result});
     });
 };
 
@@ -38,7 +38,7 @@ exports.getTalkingsOfUser = function (req, res) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
-            res.status(201).json({msg: "OK", data: result});
+            res.json({msg: "OK", data: result});
     });
 };
 
@@ -51,7 +51,7 @@ exports.getTalkingsOfGroup = function (req, res) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
-            res.status(201).json({msg: "OK", data: result});
+            res.json({msg: "OK", data: result});
     });
 };
 
@@ -64,7 +64,7 @@ exports.getFollowedTalkings = function (req, res) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
-            res.status(201).json({msg: "OK", data: result});
+            res.json({msg: "OK", data: result});
     });
 };
 
