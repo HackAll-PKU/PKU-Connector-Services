@@ -56,6 +56,7 @@ PUT /user/:uid
 /*******************************
 *             关注              *
 ********************************/
+胡顺昕
 
 POST /follow/user/:uid
     JSON返回
@@ -68,6 +69,21 @@ POST /follow/group/:gid
 
 DELETE /follow/group/:gid
     JSON返回
+
+GET /relation/user/:uid/me
+    JSON返回关系状态(0:无关系, 1:已关注, 2:被关注, 3:互相关注)
+
+GET /relation/user/:uid/follows
+    JSON返回uid的关注列表{users,groups}
+
+GET /relation/user/:uid/followers
+    JSON返回uid的粉丝列表
+
+GET /relation/group/:gid/me
+    JSON返回关系状态(0:未关注, 1:已关注)
+
+GET /relation/group/:gid/followers
+    JSON返回gid的粉丝列表
 
 /********************************
 *               认证             *

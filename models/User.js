@@ -46,7 +46,7 @@ User.prototype.addUserToDatabase = function (completionHandler) {
     }
     pool.getConnection(function (err, connection) {
         if (err)
-            completionHandler({code: 400, msg: "连接数据库错误"}, null);
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
         else {
             connection.query('INSERT INTO `PKU-Connector`.`user` (`uname`, `password`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 [requestUser.uname, requestUser.password, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear],
@@ -71,7 +71,7 @@ User.prototype.getUserInfo = function (completionHandler) {
         completionHandler({code: 400, msg: "uid为空"}, null);
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query('SELECT `uid`, `uname`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year` FROM `PKU-Connector`.`user` WHERE `uid` = ?',
             [requestUid],
             function (err, rows) {
@@ -96,7 +96,7 @@ User.prototype.modifyUserInfo = function (completionHandler) {
         completionHandler({code: 400, msg: "uid为空"}, null);
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query("UPDATE `PKU-Connector`.`user` SET `uname` = ?, `nickname` = ?, `avatar` = ?, `background` = ?, `gender` = ?, `signature` = ?, `birthday` = ?, `department` = ?, `enrollment_year` = ? WHERE `uid`=?",
             [requestUser.uname, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear, requestUser.uid],
             function (err, result) {
@@ -122,7 +122,7 @@ User.prototype.authenticate = function (completionHandler) {
         completionHandler({code: 400, msg: "用户名或密码为空"}, null);
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query("SELECT uid, password FROM `PKU-Connector`.`user` WHERE `uname` = ?",
             [requestUname],
             function (err, rows) {

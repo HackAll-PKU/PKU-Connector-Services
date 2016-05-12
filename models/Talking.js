@@ -28,7 +28,7 @@ Talking.prototype.addTalkingToDatabase = function (completionHandler) {
     var requestTalking = this;
     pool.getConnection(function (err, connection) {
         if (err)
-            completionHandler({code: 400, msg: "连接数据库错误"}, null);
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
         else {
             connection.query('INSERT INTO `PKU-Connector`.`talking` (`text`, `image`, `user_uid`, `group_gid`) VALUES (?, ?, ?, ?)',
                 [requestTalking.text, requestTalking.image, requestTalking.user_uid, requestTalking.group_gid],
@@ -53,7 +53,7 @@ Talking.prototype.getTalkingInfo = function (completionHandler) {
         completionHandler({code: 400, msg: "blank tid"}, null);
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `tid` = ?',
             [requestTid],
             function (err, rows) {
@@ -78,7 +78,7 @@ Talking.prototype.getTalkingsOfUser = function (completionHandler) {
         completionHandler({code: 400, msg: "blank uid"}, null);
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query('SELECT `tid`, `timestamp` FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ORDER BY `timestamp` DESC',
             [requestUid],
             function (err, rows) {
@@ -101,7 +101,7 @@ Talking.prototype.getTalkingsOfGroup = function (completionHandler) {
         completionHandler({code: 400, msg: "blank gid"}, null);
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query('SELECT `tid`, `timestamp` FROM `PKU-Connector`.`talking` WHERE `group_gid` = ? ORDER BY `timestamp` DESC',
             [requestGid],
             function (err, rows) {
@@ -121,7 +121,7 @@ Talking.prototype.getTalkingsOfGroup = function (completionHandler) {
 Talking.prototype.getFollowedTalkings = function (completionHandler) {
     var requestUid = this.user_uid;
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query('SELECT `talking`.`tid`, `talking`.`user_uid`, `talking`.`group_gid` FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` WHERE (`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`) ORDER BY `timestamp` DESC',
             [requestUid, requestUid],
             function (err, rows) {
@@ -145,7 +145,7 @@ Talking.prototype.deleteTalking = function(completionHandler){
         completionHandler({code: 400, msg: "invalid tid"}, null);
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         //查询被删说说的uid
         connection.query('SELECT `user_uid` FROM `PKU-Connector`.`talking` WHERE `tid` = ?', [requestTid],
             function (err, rows) {

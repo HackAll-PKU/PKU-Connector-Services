@@ -41,7 +41,7 @@ Comment.prototype.addCommentToDatabase = function (completionHandler) {
     }
     pool.getConnection(function (err, connection) {
         if (err)
-            completionHandler({code: 400, msg: "连接数据库错误"}, null);
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
         else {
             if (requestComment.parent_cid) {
                 connection.query('SELECT `parent_cid`, `talking_tid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?',
@@ -86,9 +86,10 @@ Comment.prototype.getComment = function (completionHandler) {
     var requestCid = this.cid;
     if (!requestCid) {
         completionHandler({code: 400, msg: "blank cid"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query('SELECT * FROM `PKU-Connector`.`comment` WHERE `cid` = ?',
             [requestCid],
             function (err, rows) {
@@ -112,9 +113,10 @@ Comment.prototype.deleteComment = function (completionHandler) {
     var requestUid = this.user_uid;
     if (!requestCid) {
         completionHandler({code: 400, msg: "invalid cid"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         //查询被删评论的user_uid
         connection.query('SELECT `user_uid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?', [requestCid],
             function (err, rows) {
@@ -168,9 +170,10 @@ Comment.prototype.getCommentListOfTalking = function (completionHandler) {
     var requestTid = this.talking_tid;
     if (!requestTid) {
         completionHandler({code: 400, msg: "blank tid"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 400, msg: "连接数据库错误"}, null);
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query('SELECT `cid`, `parent_cid` FROM `PKU-Connector`.`comment` WHERE `talking_tid` = ?', [requestTid],
             function (err, rows) {
                 connection.release();
@@ -191,7 +194,7 @@ exports.ensureSafeTalkingDeletion = function (tid, completionHandler) {
     if (tid) {
         pool.getConnection(function (err, connection) {
             if (err) {
-                completionHandler({code: 400, msg: "数据库连接错误"}, null);
+                completionHandler({code: 500, msg: "连接数据库错误"}, null);
                 return;
             }
             var deletedCnt = 0;
