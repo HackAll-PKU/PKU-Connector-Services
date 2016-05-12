@@ -44,11 +44,14 @@ Comment.prototype.addCommentToDatabase = function (completionHandler) {
             completionHandler({code: 400, msg: "连接数据库错误"}, null);
         else {
             if (requestComment.parent_cid) {
-                connection.query('SELECT `parent_cid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?', [requestComment.parent_cid],
+                connection.query('SELECT `parent_cid`, `talking_tid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?',
+                    [requestComment.parent_cid],
                     function (err, rows) {
-                        if (!err && rows.length > 0 && rows[0]['parent_cid'])
-                            requestComment.parent_cid = rows[0]['parent_cid'];
-
+                        //继承parent_cid和talking_tid
+                        if (!err && rows.length > 0) {
+                            requestComment.talking_tid = rows[0].talking_tid;
+                            if (rows[0].parent_cid) requestComment.parent_cid = rows[0].parent_cid;
+                        }
                         connection.query('INSERT INTO `PKU-Connector`.`comment` (`text`, `talking_tid`, `user_uid`, `parent_cid`) VALUES (?, ?, ?, ?)',
                             [requestComment.text, requestComment.talking_tid, requestComment.user_uid, requestComment.parent_cid],
                             function (err, result) {
@@ -126,7 +129,7 @@ Comment.prototype.deleteComment = function (completionHandler) {
                 }
 
                 //检查uid是否相符
-                if (requestUid != rows[0]['user_uid']) {
+                if (requestUid != rows[0].user_uid) {
                     connection.release();
                     completionHandler({code: 403, msg: "sorry"}, null);
                     return;
@@ -188,7 +191,7 @@ exports.ensureSafeTalkingDeletion = function (tid, completionHandler) {
     if (tid) {
         pool.getConnection(function (err, connection) {
             if (err) {
-                completionHandler(1, null);
+                completionHandler({code: 400, msg: "数据库连接错误"}, null);
                 return;
             }
             var deletedCnt = 0;
@@ -196,19 +199,19 @@ exports.ensureSafeTalkingDeletion = function (tid, completionHandler) {
                 function (err, result) {
                     if (err) {
                         connection.release();
-                        completionHandler(1, null);
+                        completionHandler({code: 400, msg: "删除子评论时发生未知错误"}, null);
                     } else {
                         deletedCnt += result.affectedRows;
                         connection.query('DELETE FROM `PKU-Connector`.`comment` WHERE `talking_tid` = ? AND `parent_cid` IS NULL', [tid],
                             function (err, result) {
                                 connection.release();
                                 if (err) {
-                                    completionHandler(1, null);
+                                    completionHandler({code: 400, msg: "删除评论时发生未知错误"}, null);
                                 } else {
                                     deletedCnt += result.affectedRows;
                                     completionHandler(null, deletedCnt);
                                 }
-                        });
+                            });
                     }
                 });
         });

@@ -4,6 +4,10 @@
     "method": "POST"
   },
   {
+    "path": "^/api/v1/user/\\d+$",
+    "method": "GET"
+  },
+  {
     "path": "^/$",
     "method": "GET"
   },
@@ -11,8 +15,21 @@
     "path": "^/api/v1/comment/\\d+$",
     "method": "GET"
   },
+
   {
     "path": "^/api/v1/comment/t/\\d+$",
+    "method": "GET"
+  },
+  {
+    "path": "^/api/v1/talking/\\d+$",
+    "method": "GET"
+  },
+  {
+    "path": "^/api/v1/talkings/u/\\d+$",
+    "method": "GET"
+  },
+  {
+    "path": "^/api/v1/talkings/g/\\d+$",
     "method": "GET"
   }
 ]

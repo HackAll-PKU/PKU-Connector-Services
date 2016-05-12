@@ -12,9 +12,24 @@ var talkingController = require("../controllers/TalkingController.js");
 router.post('/api/v1/talking', talkingController.postNewTalking);
 
 /**
- * 获取该用户的新说说
+ * 获取说说
  */
-router.get('/api/v1/talkings/:uid', talkingController.getMyTalkings);
+router.get('/api/v1/talking/:tid' ,talkingController.getTalkingInfo);
+
+/**
+ * 获取该用户的说说
+ */
+router.get('/api/v1/talkings/u/:uid', talkingController.getTalkingsOfUser);
+
+/**
+ * 获取该用户组的说说
+ */
+router.get('/api/v1/talkings/g/:gid', talkingController.getTalkingsOfGroup);
+
+/**
+ * 获取当前登录用户所有关注人以及group的的说说
+ */
+router.get('/api/v1/talkings', talkingController.getFollowedTalkings);
 
 /**
  * 删除说说(同时删除说说的评论)

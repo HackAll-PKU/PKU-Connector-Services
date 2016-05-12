@@ -38,7 +38,7 @@ exports.deleteComment = function (req, res) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
-            res.json({msg: "OK", data: result}); 
+            res.json({msg: "OK", data: {affectedRows: result}}); 
     });
 };
 
