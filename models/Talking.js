@@ -75,27 +75,31 @@ Talking.prototype.getTalkingInfo = function (completionHandler) {
  */
 Talking.prototype.getTalkingsOfUser = function (page, completionHandler) {
     var requestUid = this.user_uid;
-    var requestPage = page || 1;
+    var requestOffset = ((page || 1) - 1) * 10;
     if (!requestUid) {
         completionHandler({code: 400, msg: "blank uid"}, null);
     }
     pool.getConnection(function (err, connection) {
         if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        connection.query('SELECT `tid`, `timestamp` FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ORDER BY `timestamp` DESC LIMIT ?, 10',
-            [requestUid, (requestPage - 1) * 10],
+        connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ORDER BY `timestamp` DESC LIMIT ?, 10',
+            [requestUid, requestOffset],
             function (err, rows) {
-                connection.release();
-                if (err)
+                if (err) {
+                    connection.release();
                     completionHandler({code: 400, msg: err.code}, null);
-                else {
-                    if (!page){
-                        connection.query('SELECT COUNT(`tid`) FROM `PKU-Connector`.`talking` WHERE `user_uid` = ?',
+                } else {
+                    if (!page) {
+                        connection.query('SELECT COUNT(`tid`) AS `num` FROM `PKU-Connector`.`talking` WHERE `user_uid` = ?',
                             [requestUid],
-                            function (err, num){
-                                if (!err) rows.pages = num;
+                            function (err, num) {
+                                connection.release();
+                                if (!err) completionHandler(null, {rows: rows, pages: Math.ceil(num[0].num / 10)});
+                                else completionHandler(null, {rows: rows});
                             });
+                    } else {
+                        connection.release();
+                        completionHandler(null, {rows: rows});
                     }
-                    completionHandler(null, rows);
                 }
             });
     });
@@ -103,43 +107,81 @@ Talking.prototype.getTalkingsOfUser = function (page, completionHandler) {
 
 /**
  * 获取gid的说说
+ *  @param page 页数
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getTalkingsOfGroup = function (completionHandler) {
+Talking.prototype.getTalkingsOfGroup = function (page, completionHandler) {
     var requestGid = this.group_gid;
+    var requestOffset = ((page || 1) - 1) * 10;
     if (!requestGid) {
         completionHandler({code: 400, msg: "blank gid"}, null);
     }
     pool.getConnection(function (err, connection) {
         if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        connection.query('SELECT `tid`, `timestamp` FROM `PKU-Connector`.`talking` WHERE `group_gid` = ? ORDER BY `timestamp` DESC',
-            [requestGid],
+        connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `group_gid` = ? ORDER BY `timestamp` DESC LIMIT ?, 10',
+            [requestGid, requestOffset],
             function (err, rows) {
-                connection.release();
-                if (err)
+                if (err) {
+                    connection.release();
                     completionHandler({code: 400, msg: err.code}, null);
-                else
-                    completionHandler(null, rows);
+                } else {
+                    if (!page) {
+                        connection.query('SELECT COUNT(`tid`) AS `num` FROM `PKU-Connector`.`talking` WHERE `group_gid` = ?',
+                            [requestGid],
+                            function (err, num) {
+                                connection.release();
+                                if (!err) completionHandler(null, {rows: rows, pages: Math.ceil(num[0].num / 10)});
+                                else completionHandler(null, {rows: rows});
+                            });
+                    } else {
+                        connection.release();
+                        completionHandler(null, {rows: rows});
+                    }
+                }
             });
     });
 };
 
 /**
  * 获取当前登录用户所有关注人以及group的的说说
+ *  @param page
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getFollowedTalkings = function (completionHandler) {
+Talking.prototype.getFollowedTalkings = function (page, completionHandler) {
     var requestUid = this.user_uid;
+    var requestOffset = ((page || 1) - 1) * 10;
     pool.getConnection(function (err, connection) {
         if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        connection.query('SELECT `talking`.`tid`, `talking`.`user_uid`, `talking`.`group_gid` FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` WHERE (`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`) ORDER BY `timestamp` DESC',
-            [requestUid, requestUid],
+        connection.query(
+            'SELECT DISTINCT `PKU-Connector`.`talking`.* ' +
+            'FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` ' +
+            'WHERE (`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
+            'OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`) ' +
+            'ORDER BY `timestamp` DESC ' +
+            'LIMIT ?, 10',
+            [requestUid, requestUid, requestOffset],
             function (err, rows) {
-                connection.release();
-                if (err)
+                if (err) {
+                    connection.release();
                     completionHandler({code: 400, msg: err.code}, null);
-                else
-                    completionHandler(null, rows);
+                } else {
+                    if (!page) {
+                        connection.query(
+                            'SELECT COUNT(DISTINCT `PKU-Connector`.`talking`.`tid`) AS `num` ' +
+                            'FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` ' +
+                            'WHERE (`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
+                            'OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`)',
+                            [requestUid, requestUid],
+                            function (err, num) {
+                                connection.release();
+                                if (!err) completionHandler(null, {rows: rows, pages: Math.ceil(num[0].num / 10)});
+                                else completionHandler(null, {rows: rows});
+                            });
+                    } else {
+                        connection.release();
+                        completionHandler(null, {rows: rows});
+                    }
+                }
             });
     });
 };
@@ -148,7 +190,7 @@ Talking.prototype.getFollowedTalkings = function (completionHandler) {
  * 删除该条说说
  * @param completionHandler 返回闭包,包含err和affectedRows
  */
-Talking.prototype.deleteTalking = function(completionHandler){
+Talking.prototype.deleteTalking = function (completionHandler) {
     var requestTid = this.tid;
     var requestUid = this.user_uid;
     if (!requestTid) {
@@ -187,7 +229,10 @@ Talking.prototype.deleteTalking = function(completionHandler){
                         connection.query('DELETE FROM `PKU-Connector`.`talking` WHERE `tid` = ?', [requestTid],
                             function (err, result2) {
                                 if (err) completionHandler({code: 400, msg: err.code}, null);
-                                else completionHandler(null, {affectedTalkings: result2.affectedRows, affectedComments: result});
+                                else completionHandler(null, {
+                                    affectedTalkings: result2.affectedRows,
+                                    affectedComments: result
+                                });
                             }
                         );
                         connection.release();
