@@ -34,7 +34,7 @@ exports.getTalkingInfo = function (req, res) {
  */
 exports.getTalkingsOfUser = function (req, res) {
     var talking = new model.Talking(null, null, null, req.params.uid);
-    talking.getTalkingsOfUser(function (err, result) {
+    talking.getTalkingsOfUser(req.query.page, function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else

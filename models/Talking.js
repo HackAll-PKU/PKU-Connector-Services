@@ -70,23 +70,33 @@ Talking.prototype.getTalkingInfo = function (completionHandler) {
 
 /**
  * 获取uid的说说
+ *  @param page 页数
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getTalkingsOfUser = function (completionHandler) {
+Talking.prototype.getTalkingsOfUser = function (page, completionHandler) {
     var requestUid = this.user_uid;
+    var requestPage = page || 1;
     if (!requestUid) {
         completionHandler({code: 400, msg: "blank uid"}, null);
     }
     pool.getConnection(function (err, connection) {
         if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        connection.query('SELECT `tid`, `timestamp` FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ORDER BY `timestamp` DESC',
-            [requestUid],
+        connection.query('SELECT `tid`, `timestamp` FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ORDER BY `timestamp` DESC LIMIT ?, 10',
+            [requestUid, (requestPage - 1) * 10],
             function (err, rows) {
                 connection.release();
                 if (err)
                     completionHandler({code: 400, msg: err.code}, null);
-                else
+                else {
+                    if (!page){
+                        connection.query('SELECT COUNT(`tid`) FROM `PKU-Connector`.`talking` WHERE `user_uid` = ?',
+                            [requestUid],
+                            function (err, num){
+                                if (!err) rows.pages = num;
+                            });
+                    }
                     completionHandler(null, rows);
+                }
             });
     });
 };
