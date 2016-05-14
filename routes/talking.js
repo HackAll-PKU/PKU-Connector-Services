@@ -27,7 +27,12 @@ router.get('/api/v1/talkings/u/:uid', talkingController.getTalkingsOfUser);
 router.get('/api/v1/talkings/g/:gid', talkingController.getTalkingsOfGroup);
 
 /**
- * 获取当前登录用户所有关注人以及group的的说说
+ * 获取当前登录用户所有关注人以及group的新说说个数
+ */
+router.get('/api/v1/talkings/new', talkingController.getNewFollowedTalkingsCount);
+
+/**
+ * 获取当前登录用户所有关注人以及group的说说
  */
 router.get('/api/v1/talkings', talkingController.getFollowedTalkings);
 

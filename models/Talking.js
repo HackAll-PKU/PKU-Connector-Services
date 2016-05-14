@@ -224,6 +224,38 @@ Talking.prototype.getFollowedTalkings = function (after, page, completionHandler
 };
 
 /**
+ * 获取当前登录用户自己以及所有关注人以及group的新说说个数
+ *  @param after 查询此timestamp以后的说说
+ *  @param completionHandler 返回闭包,包含err和rows
+ */
+Talking.prototype.getNewFollowedTalkingsCount = function (after, completionHandler) {
+    var requestUid = this.user_uid;
+    if (!after) {
+        completionHandler({code: 400, msg: "param after required!"}, null);
+        return;
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
+        connection.query(
+            'SELECT COUNT(DISTINCT `PKU-Connector`.`talking`.`tid`) AS `num` ' +
+            'FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` ' +
+            'WHERE ((`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
+            'OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`) ' +
+            'OR `talking`.`user_uid` = ?) ' +
+            'AND `talking`.`timestamp` > ?',
+            [requestUid, requestUid, requestUid, after],
+            function (err, num) {
+                connection.release();
+                if (err) completionHandler({code: 400, msg: err.code}, null);
+                else completionHandler(null, num[0].num);
+            });
+    });
+};
+
+/**
  * 删除该条说说
  * @param completionHandler 返回闭包,包含err和affectedRows
  */
