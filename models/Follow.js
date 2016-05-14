@@ -29,7 +29,10 @@ Relation.prototype.followUser = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('INSERT INTO `PKU-Connector`.`follow` VALUES (?, ?)', [thisUid, requestUid],
             function (err) {
                 connection.release();
@@ -53,7 +56,10 @@ Relation.prototype.followGroup = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('INSERT INTO `PKU-Connector`.`user_in_group` VALUES (?, ?)', [thisUid, requestGid],
             function (err) {
                 connection.release();
@@ -77,7 +83,10 @@ Relation.prototype.unfollowUser = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('DELETE FROM `PKU-Connector`.`follow` WHERE `follower` = ? AND `follow` = ?', [thisUid, requestUid],
             function (err) {
                 connection.release();
@@ -101,7 +110,10 @@ Relation.prototype.unfollowGroup = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('DELETE FROM `PKU-Connector`.`user_in_group` WHERE `user_uid` = ? AND `group_gid` = ?', [thisUid, requestGid],
             function (err) {
                 connection.release();
@@ -125,7 +137,10 @@ Relation.prototype.getUserRelation = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT * FROM `PKU-Connector`.`follow` WHERE (`follower` = ? AND `follow` = ?) OR (`follower` = ? AND `follow` = ?)',
             [thisUid, requestUid, requestUid, thisUid],
             function (err, rows) {
@@ -155,7 +170,10 @@ Relation.prototype.getUserFollowList = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         var followList = {};
         connection.query('SELECT `follow` AS `uid` FROM `PKU-Connector`.`follow` WHERE `follower` = ?',
             [requestUid],
@@ -191,7 +209,10 @@ Relation.prototype.getUserFollowerList = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT `follower` AS `uid` FROM `PKU-Connector`.`follow` WHERE `follow` = ?',
             [requestUid],
             function (err, rows) {
@@ -216,7 +237,10 @@ Relation.prototype.getGroupRelation = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT * FROM `PKU-Connector`.`user_in_group` WHERE `user_uid` = ? AND `group_gid` = ?',
             [thisUid, requestGid],
             function (err, rows) {
@@ -243,7 +267,10 @@ Relation.prototype.getGroupFollowerList = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT `user_uid` AS `uid` FROM `PKU-Connector`.`user_in_group` WHERE `group_gid` = ?',
             [requestGid],
             function (err, rows) {

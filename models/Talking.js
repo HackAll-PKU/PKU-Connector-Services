@@ -27,20 +27,24 @@ function Talking(tid, text, image, uid, gid) {
  */
 Talking.prototype.addTalkingToDatabase = function (completionHandler) {
     var requestTalking = this;
+    if (this.text == "" && !this.image) {
+        completionHandler({code: 400, msg: "内容不能为空"}, null);
+        return;
+    }
     pool.getConnection(function (err, connection) {
-        if (err)
+        if (err) {
             completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        else {
-            connection.query('INSERT INTO `PKU-Connector`.`talking` (`text`, `image`, `user_uid`, `group_gid`) VALUES (?, ?, ?, ?)',
-                [requestTalking.text, requestTalking.image, requestTalking.user_uid, requestTalking.group_gid],
-                function (err, result) {
-                    connection.release();
-                    if (err)
-                        completionHandler({code: 400, msg: err.code}, null);
-                    else
-                        completionHandler(null, result);
-                });
+            return;
         }
+        connection.query('INSERT INTO `PKU-Connector`.`talking` (`text`, `image`, `user_uid`, `group_gid`) VALUES (?, ?, ?, ?)',
+            [requestTalking.text, requestTalking.image, requestTalking.user_uid, requestTalking.group_gid],
+            function (err, result) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else
+                    completionHandler(null, result);
+            });
     });
 };
 
@@ -52,9 +56,13 @@ Talking.prototype.getTalkingInfo = function (completionHandler) {
     var requestTid = this.tid;
     if (!requestTid) {
         completionHandler({code: 400, msg: "blank tid"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `tid` = ?',
             [requestTid],
             function (err, rows) {
@@ -80,9 +88,13 @@ Talking.prototype.getTalkingsOfUser = function (after, page, completionHandler) 
     var requestOffset = ((page || 1) - 1) * TALKINGS_PER_PAGE;
     if (!requestUid) {
         completionHandler({code: 400, msg: "blank uid"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ' +
             (after ? 'AND `timestamp` > ? ' : '') +
             'ORDER BY `timestamp` DESC LIMIT ?, ?',
@@ -122,9 +134,13 @@ Talking.prototype.getTalkingsOfGroup = function (after, page, completionHandler)
     var requestOffset = ((page || 1) - 1) * TALKINGS_PER_PAGE;
     if (!requestGid) {
         completionHandler({code: 400, msg: "blank gid"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `group_gid` = ? ' +
             (after ? 'AND `timestamp` > ? ' : '') +
             'ORDER BY `timestamp` DESC LIMIT ?, ?',
@@ -163,7 +179,10 @@ Talking.prototype.getFollowedTalkings = function (after, page, completionHandler
     var requestUid = this.user_uid;
     var requestOffset = ((page || 1) - 1) * TALKINGS_PER_PAGE;
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query(
             'SELECT DISTINCT `PKU-Connector`.`talking`.* ' +
             'FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` ' +
@@ -213,9 +232,13 @@ Talking.prototype.deleteTalking = function (completionHandler) {
     var requestUid = this.user_uid;
     if (!requestTid) {
         completionHandler({code: 400, msg: "invalid tid"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         //查询被删说说的uid
         connection.query('SELECT `user_uid` FROM `PKU-Connector`.`talking` WHERE `tid` = ?', [requestTid],
             function (err, rows) {
@@ -246,6 +269,7 @@ Talking.prototype.deleteTalking = function (completionHandler) {
                         //删除说说
                         connection.query('DELETE FROM `PKU-Connector`.`talking` WHERE `tid` = ?', [requestTid],
                             function (err, result2) {
+                                connection.release();
                                 if (err) completionHandler({code: 400, msg: err.code}, null);
                                 else completionHandler(null, {
                                     affectedTalkings: result2.affectedRows,
@@ -253,10 +277,8 @@ Talking.prototype.deleteTalking = function (completionHandler) {
                                 });
                             }
                         );
-                        connection.release();
                     }
                 });
-
             });
     });
 };

@@ -40,40 +40,39 @@ Comment.prototype.addCommentToDatabase = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err)
+        if (err) {
             completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        else {
-            if (requestComment.parent_cid) {
-                connection.query('SELECT `parent_cid`, `talking_tid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?',
-                    [requestComment.parent_cid],
-                    function (err, rows) {
-                        //继承parent_cid和talking_tid
-                        if (!err && rows.length > 0) {
-                            requestComment.talking_tid = rows[0].talking_tid;
-                            if (rows[0].parent_cid) requestComment.parent_cid = rows[0].parent_cid;
-                        }
-                        connection.query('INSERT INTO `PKU-Connector`.`comment` (`text`, `talking_tid`, `user_uid`, `parent_cid`) VALUES (?, ?, ?, ?)',
-                            [requestComment.text, requestComment.talking_tid, requestComment.user_uid, requestComment.parent_cid],
-                            function (err, result) {
-                                connection.release();
-                                if (err)
-                                    completionHandler({code: 400, msg: err.code}, null);
-                                else
-                                    completionHandler(null, result);
-                            });
-                    });
-            } else {
-                connection.query('INSERT INTO `PKU-Connector`.`comment` (`text`, `talking_tid`, `user_uid`) VALUES (?, ?, ?)',
-                    [requestComment.text, requestComment.talking_tid, requestComment.user_uid],
-                    function (err, result) {
-                        connection.release();
-                        if (err)
-                            completionHandler({code: 400, msg: err.code}, null);
-                        else
-                            completionHandler(null, result);
-                    });
-            }
-
+            return;
+        }
+        if (requestComment.parent_cid) {
+            connection.query('SELECT `parent_cid`, `talking_tid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?',
+                [requestComment.parent_cid],
+                function (err, rows) {
+                    //继承parent_cid和talking_tid
+                    if (!err && rows.length > 0) {
+                        requestComment.talking_tid = rows[0].talking_tid;
+                        if (rows[0].parent_cid) requestComment.parent_cid = rows[0].parent_cid;
+                    }
+                    connection.query('INSERT INTO `PKU-Connector`.`comment` (`text`, `talking_tid`, `user_uid`, `parent_cid`) VALUES (?, ?, ?, ?)',
+                        [requestComment.text, requestComment.talking_tid, requestComment.user_uid, requestComment.parent_cid],
+                        function (err, result) {
+                            connection.release();
+                            if (err)
+                                completionHandler({code: 400, msg: err.code}, null);
+                            else
+                                completionHandler(null, result);
+                        });
+                });
+        } else {
+            connection.query('INSERT INTO `PKU-Connector`.`comment` (`text`, `talking_tid`, `user_uid`) VALUES (?, ?, ?)',
+                [requestComment.text, requestComment.talking_tid, requestComment.user_uid],
+                function (err, result) {
+                    connection.release();
+                    if (err)
+                        completionHandler({code: 400, msg: err.code}, null);
+                    else
+                        completionHandler(null, result);
+                });
         }
     });
 };
@@ -89,7 +88,10 @@ Comment.prototype.getComment = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT * FROM `PKU-Connector`.`comment` WHERE `cid` = ?',
             [requestCid],
             function (err, rows) {
@@ -116,7 +118,10 @@ Comment.prototype.deleteComment = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         //查询被删评论的user_uid
         connection.query('SELECT `user_uid` FROM `PKU-Connector`.`comment` WHERE `cid` = ?', [requestCid],
             function (err, rows) {
@@ -173,7 +178,10 @@ Comment.prototype.getCommentListOfTalking = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT `cid`, `parent_cid` FROM `PKU-Connector`.`comment` WHERE `talking_tid` = ?', [requestTid],
             function (err, rows) {
                 connection.release();

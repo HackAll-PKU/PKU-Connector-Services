@@ -45,19 +45,19 @@ User.prototype.addUserToDatabase = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err)
+        if (err) {
             completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        else {
-            connection.query('INSERT INTO `PKU-Connector`.`user` (`uname`, `password`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [requestUser.uname, requestUser.password, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear],
-                function (err, result) {
-                    connection.release();
-                    if (err)
-                        completionHandler({code: 400, msg: err.code}, null);
-                    else
-                        completionHandler(null, result);
-                });
+            return;
         }
+        connection.query('INSERT INTO `PKU-Connector`.`user` (`uname`, `password`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [requestUser.uname, requestUser.password, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear],
+            function (err, result) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else
+                    completionHandler(null, result);
+            });
     });
 };
 
@@ -69,9 +69,13 @@ User.prototype.getUserInfo = function (completionHandler) {
     var requestUid = this.uid;
     if (!requestUid) {
         completionHandler({code: 400, msg: "uid为空"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query('SELECT `uid`, `uname`, `nickname`, `avatar`, `background`, `gender`, `signature`, `birthday`, `department`, `enrollment_year` FROM `PKU-Connector`.`user` WHERE `uid` = ?',
             [requestUid],
             function (err, rows) {
@@ -94,9 +98,13 @@ User.prototype.modifyUserInfo = function (completionHandler) {
     var requestUser = this;
     if (!requestUser.uid) {
         completionHandler({code: 400, msg: "uid为空"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query("UPDATE `PKU-Connector`.`user` SET `uname` = ?, `nickname` = ?, `avatar` = ?, `background` = ?, `gender` = ?, `signature` = ?, `birthday` = ?, `department` = ?, `enrollment_year` = ? WHERE `uid`=?",
             [requestUser.uname, requestUser.nickname, requestUser.avatar, requestUser.background, requestUser.gender, requestUser.signature, requestUser.birthday, requestUser.department, requestUser.enrollmentYear, requestUser.uid],
             function (err, result) {
@@ -120,9 +128,13 @@ User.prototype.authenticate = function (completionHandler) {
     var requestPassword = this.password;
     if (!(requestUname && requestPassword)) {
         completionHandler({code: 400, msg: "用户名或密码为空"}, null);
+        return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
         connection.query("SELECT uid, password FROM `PKU-Connector`.`user` WHERE `uname` = ?",
             [requestUname],
             function (err, rows) {

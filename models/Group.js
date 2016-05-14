@@ -29,19 +29,19 @@ Group.prototype.addGroupToDatabase = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err)
+        if (err) {
             completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        else {
-            connection.query('INSERT INTO `PKU-Connector`.`group` (`gname`, `avatar`) VALUES (?, ?)',
-                [requestGroup.gname, requestGroup.avatar],
-                function (err, result) {
-                    connection.release();
-                    if (err)
-                        completionHandler({code: 400, msg: err.code}, null);
-                    else
-                        completionHandler(null, result);
-                });
+            return;
         }
+        connection.query('INSERT INTO `PKU-Connector`.`group` (`gname`, `avatar`) VALUES (?, ?)',
+            [requestGroup.gname, requestGroup.avatar],
+            function (err, result) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else
+                    completionHandler(null, result);
+            });
     });
 };
 
@@ -56,20 +56,21 @@ Group.prototype.getGroupInfo = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        else {
-            connection.query('SELECT `gid`, `gname`, `avatar` FROM `PKU-Connector`.`group` WHERE `gid` = ?',
-                [requestGid],
-                function (err, rows) {
-                    connection.release();
-                    if (err)
-                        completionHandler({code: 400, msg: err.code}, null);
-                    else if (rows.length > 0)
-                        completionHandler(null, rows[0]);
-                    else
-                        completionHandler({code: 400, msg: "没有此组"}, null);
-                });
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
         }
+        connection.query('SELECT `gid`, `gname`, `avatar` FROM `PKU-Connector`.`group` WHERE `gid` = ?',
+            [requestGid],
+            function (err, rows) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else if (rows.length > 0)
+                    completionHandler(null, rows[0]);
+                else
+                    completionHandler({code: 400, msg: "没有此组"}, null);
+            });
     });
 };
 
@@ -84,20 +85,21 @@ Group.prototype.modifyGroupInfo = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        else {
-            connection.query("UPDATE `PKU-Connector`.`group` SET `gname` = ?, `avatar` = ? WHERE `gid` = ?",
-                [requestGroup.gname, requestGroup.avatar, requestGroup.gid],
-                function (err, result) {
-                    connection.release();
-                    if (err)
-                        completionHandler({code: 400, msg: err.code}, null);
-                    else if (result.affectedRows > 0)
-                        completionHandler(null);
-                    else
-                        completionHandler({code: 400, msg: "没有此组"}, null);
-                });
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
         }
+        connection.query("UPDATE `PKU-Connector`.`group` SET `gname` = ?, `avatar` = ? WHERE `gid` = ?",
+            [requestGroup.gname, requestGroup.avatar, requestGroup.gid],
+            function (err, result) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else if (result.affectedRows > 0)
+                    completionHandler(null);
+                else
+                    completionHandler({code: 400, msg: "没有此组"}, null);
+            });
     });
 };
 
@@ -112,18 +114,19 @@ Group.prototype.suggestGroupName = function (completionHandler) {
         return;
     }
     pool.getConnection(function (err, connection) {
-        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        else {
-            connection.query("SELECT `gid`, `gname` FROM `PKU-Connector`.`group` WHERE `gname` LIKE ?",
-                ['%' + requestGroupName + '%'],
-                function (err, row) {
-                    connection.release();
-                    if (err)
-                        completionHandler({code: 400, msg: err.code}, null);
-                    else
-                        completionHandler(null, row);
-                });
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
         }
+        connection.query("SELECT `gid`, `gname` FROM `PKU-Connector`.`group` WHERE `gname` LIKE ?",
+            ['%' + requestGroupName + '%'],
+            function (err, row) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else
+                    completionHandler(null, row);
+            });
     });
 };
 
