@@ -172,6 +172,11 @@ POST /group
         avatar
     JSON返回gid
 
+PUT /group/:uid
+    参数:
+        同POST /gid
+    JSON无返回data
+
 /*********************************
 *             Search             *
 **********************************/
