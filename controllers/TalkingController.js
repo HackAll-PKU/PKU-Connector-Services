@@ -34,7 +34,7 @@ exports.getTalkingInfo = function (req, res) {
  */
 exports.getTalkingsOfUser = function (req, res) {
     var talking = new model.Talking(null, null, null, req.params.uid);
-    talking.getTalkingsOfUser(function (err, result) {
+    talking.getTalkingsOfUser(req.query.after, req.query.page, function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
@@ -47,7 +47,7 @@ exports.getTalkingsOfUser = function (req, res) {
  */
 exports.getTalkingsOfGroup = function (req, res) {
     var talking = new model.Talking(null, null, null, null, req.params.gid);
-    talking.getTalkingsOfGroup(function (err, result) {
+    talking.getTalkingsOfGroup(req.query.after, req.query.page, function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
@@ -56,11 +56,11 @@ exports.getTalkingsOfGroup = function (req, res) {
 };
 
 /**
- * 获取当前登录用户所有关注人以及group的的说说
+ * 获取当前登录用户自己以及所有关注人以及group的的说说
  */
 exports.getFollowedTalkings = function (req, res) {
     var talking = new model.Talking(null, null, null, req.tokenInfo.uid);
-    talking.getFollowedTalkings(function (err, result) {
+    talking.getFollowedTalkings(req.query.after, req.query.page, function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
