@@ -34,7 +34,7 @@ exports.getGroupInfo = function (req, res) {
  */
 exports.modifyGroupInfo = function (req, res) {
     var group = new model.Group(req.params.gid, req.body.gname, req.body.avatar);
-    group.modifyGroupInfo(function (err, result) {
+    group.modifyGroupInfo(function (err) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
