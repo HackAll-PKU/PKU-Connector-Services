@@ -46,7 +46,7 @@ Group.prototype.addGroupToDatabase = function (completionHandler) {
 };
 
 /**
- * 获取用户个人信息
+ * 获取组信息
  * @param completionHandler 返回闭包,包含err和rows
  */
 Group.prototype.getGroupInfo = function (completionHandler) {
@@ -71,10 +71,10 @@ Group.prototype.getGroupInfo = function (completionHandler) {
 };
 
 /**
- * 更新用户个人信息
+ * 更新组信息
  * @param completionHandler 返回闭包,包含err和result
  */
-User.prototype.modifyGroupInfo = function (completionHandler) {
+Group.prototype.modifyGroupInfo = function (completionHandler) {
     var requestGroup = this;
     if (!requestGroup.gid) {
         completionHandler({code: 400, msg: "gid为空"}, null);

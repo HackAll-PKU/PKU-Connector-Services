@@ -6,17 +6,17 @@ var router = express.Router();
 
 var groupController = require("../controllers/GroupController.js");
 /**
- * 新建用户
+ * 新建组
  */
 router.post('/api/v1/group', groupController.addNewGroup);
 
 /**
- * 查询用户详细信息
+ * 查询组详细信息
  */
 router.get('/api/v1/group/:gid', groupController.getGroupInfo);
 
 /**
- * 更新用户信息(除了密码之外的属性都能够更改)
+ * 更新组信息
  */
 router.put('/api/v1/group/:gid' , groupController.modifyGroupInfo);
 
