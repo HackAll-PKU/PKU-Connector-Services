@@ -3,6 +3,7 @@
  */
 var pool = require("./BaseModel.js");
 var defaultConf = require("../conf/default.json");
+var TALKINGS_PER_PAGE = 10;
 
 /**
  * 说说构造方法
@@ -70,30 +71,35 @@ Talking.prototype.getTalkingInfo = function (completionHandler) {
 
 /**
  * 获取uid的说说
+ *  @param after 查询此timestamp以后的说说
  *  @param page 页数
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getTalkingsOfUser = function (page, completionHandler) {
+Talking.prototype.getTalkingsOfUser = function (after, page, completionHandler) {
     var requestUid = this.user_uid;
-    var requestOffset = ((page || 1) - 1) * 10;
+    var requestOffset = ((page || 1) - 1) * TALKINGS_PER_PAGE;
     if (!requestUid) {
         completionHandler({code: 400, msg: "blank uid"}, null);
     }
     pool.getConnection(function (err, connection) {
         if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ORDER BY `timestamp` DESC LIMIT ?, 10',
-            [requestUid, requestOffset],
+        connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ' +
+            (after ? 'AND `timestamp` > ? ' : '') +
+            'ORDER BY `timestamp` DESC LIMIT ?, ?',
+            after ? [requestUid, after, requestOffset, TALKINGS_PER_PAGE]
+                : [requestUid, requestOffset, TALKINGS_PER_PAGE],
             function (err, rows) {
                 if (err) {
                     connection.release();
                     completionHandler({code: 400, msg: err.code}, null);
                 } else {
                     if (!page) {
-                        connection.query('SELECT COUNT(`tid`) AS `num` FROM `PKU-Connector`.`talking` WHERE `user_uid` = ?',
-                            [requestUid],
+                        connection.query('SELECT COUNT(`tid`) AS `num` FROM `PKU-Connector`.`talking` WHERE `user_uid` = ?' +
+                            (after ? ' AND `timestamp` > ?' : ''),
+                            after ? [requestUid, after] : [requestUid],
                             function (err, num) {
                                 connection.release();
-                                if (!err) completionHandler(null, {rows: rows, pages: Math.ceil(num[0].num / 10)});
+                                if (!err) completionHandler(null, {rows: rows, pages: Math.ceil(num[0].num / TALKINGS_PER_PAGE)});
                                 else completionHandler(null, {rows: rows});
                             });
                     } else {
@@ -107,30 +113,35 @@ Talking.prototype.getTalkingsOfUser = function (page, completionHandler) {
 
 /**
  * 获取gid的说说
+ *  @param after 查询此timestamp以后的说说
  *  @param page 页数
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getTalkingsOfGroup = function (page, completionHandler) {
+Talking.prototype.getTalkingsOfGroup = function (after, page, completionHandler) {
     var requestGid = this.group_gid;
-    var requestOffset = ((page || 1) - 1) * 10;
+    var requestOffset = ((page || 1) - 1) * TALKINGS_PER_PAGE;
     if (!requestGid) {
         completionHandler({code: 400, msg: "blank gid"}, null);
     }
     pool.getConnection(function (err, connection) {
         if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
-        connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `group_gid` = ? ORDER BY `timestamp` DESC LIMIT ?, 10',
-            [requestGid, requestOffset],
+        connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `group_gid` = ? ' +
+            (after ? 'AND `timestamp` > ? ' : '') +
+            'ORDER BY `timestamp` DESC LIMIT ?, ?',
+            after ? [requestGid, after, requestOffset, TALKINGS_PER_PAGE]
+                  : [requestGid, requestOffset, TALKINGS_PER_PAGE],
             function (err, rows) {
                 if (err) {
                     connection.release();
                     completionHandler({code: 400, msg: err.code}, null);
                 } else {
                     if (!page) {
-                        connection.query('SELECT COUNT(`tid`) AS `num` FROM `PKU-Connector`.`talking` WHERE `group_gid` = ?',
-                            [requestGid],
+                        connection.query('SELECT COUNT(`tid`) AS `num` FROM `PKU-Connector`.`talking` WHERE `group_gid` = ?' +
+                            (after ? ' AND `timestamp` > ?' : ''),
+                            after ? [requestGid, after] : [requestGid],
                             function (err, num) {
                                 connection.release();
-                                if (!err) completionHandler(null, {rows: rows, pages: Math.ceil(num[0].num / 10)});
+                                if (!err) completionHandler(null, {rows: rows, pages: Math.ceil(num[0].num / TALKINGS_PER_PAGE)});
                                 else completionHandler(null, {rows: rows});
                             });
                     } else {
@@ -143,23 +154,27 @@ Talking.prototype.getTalkingsOfGroup = function (page, completionHandler) {
 };
 
 /**
- * 获取当前登录用户所有关注人以及group的的说说
- *  @param page
+ * 获取当前登录用户自己以及所有关注人以及group的说说
+ *  @param after 查询此timestamp以后的说说
+ *  @param page 页数
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getFollowedTalkings = function (page, completionHandler) {
+Talking.prototype.getFollowedTalkings = function (after, page, completionHandler) {
     var requestUid = this.user_uid;
-    var requestOffset = ((page || 1) - 1) * 10;
+    var requestOffset = ((page || 1) - 1) * TALKINGS_PER_PAGE;
     pool.getConnection(function (err, connection) {
         if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
         connection.query(
             'SELECT DISTINCT `PKU-Connector`.`talking`.* ' +
             'FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` ' +
-            'WHERE (`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
+            'WHERE ((`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
             'OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`) ' +
+            'OR `talking`.`user_uid` = ?) ' +
+            (after ? 'AND `talking`.`timestamp` > ? ' : '') +
             'ORDER BY `timestamp` DESC ' +
-            'LIMIT ?, 10',
-            [requestUid, requestUid, requestOffset],
+            'LIMIT ?, ?',
+            after ? [requestUid, requestUid, requestUid, after, requestOffset, TALKINGS_PER_PAGE]
+                  : [requestUid, requestUid, requestUid, requestOffset, TALKINGS_PER_PAGE],
             function (err, rows) {
                 if (err) {
                     connection.release();
@@ -169,12 +184,15 @@ Talking.prototype.getFollowedTalkings = function (page, completionHandler) {
                         connection.query(
                             'SELECT COUNT(DISTINCT `PKU-Connector`.`talking`.`tid`) AS `num` ' +
                             'FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` ' +
-                            'WHERE (`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
-                            'OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`)',
-                            [requestUid, requestUid],
+                            'WHERE ((`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
+                            'OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`) ' +
+                            'OR `talking`.`user_uid` = ?)' +
+                            (after ? ' AND `talking`.`timestamp` > ?' : ''),
+                            after ? [requestUid, requestUid, requestUid, after]
+                                  : [requestUid, requestUid, requestUid],
                             function (err, num) {
                                 connection.release();
-                                if (!err) completionHandler(null, {rows: rows, pages: Math.ceil(num[0].num / 10)});
+                                if (!err) completionHandler(null, {rows: rows, pages: Math.ceil(num[0].num / TALKINGS_PER_PAGE)});
                                 else completionHandler(null, {rows: rows});
                             });
                     } else {
