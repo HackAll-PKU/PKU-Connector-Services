@@ -172,7 +172,7 @@ Talking.prototype.deleteTalking = function(completionHandler){
                 //检查uid是否相符
                 if (requestUid != rows[0].user_uid) {
                     connection.release();
-                    completionHandler({code: 403, msg: "sorry"}, null);
+                    completionHandler({code: 403, msg: "sorry, 你没有权限删除这条说说"}, null);
                     return;
                 }
 

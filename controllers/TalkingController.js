@@ -4,7 +4,7 @@
 var model = require("../models/Talking.js");
 
 /**
- * 发步新说说
+ * 发布新说说
  */
 exports.postNewTalking = function (req, res) {
     var talking = new model.Talking(null, req.body.text, req.body.image, req.tokenInfo.uid, req.body.gid);
