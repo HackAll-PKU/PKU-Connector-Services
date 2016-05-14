@@ -12,6 +12,9 @@ module.exports = function(app) {
     // 用户相关的api模块
     var userHandler = require('./user.js');
     app.use(userHandler);
+    // 用户组相关的api模块
+    var groupHandler = require('./group.js');
+    app.use(groupHandler);
     // 说说相关的api模块
     var talkingHandler = require('./talking.js');
     app.use(talkingHandler);

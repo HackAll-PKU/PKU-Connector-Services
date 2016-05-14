@@ -178,6 +178,14 @@ POST /group
         avatar
     JSON返回gid
 
+PUT /group/:uid
+    参数:
+        同POST /gid
+    JSON无返回data
+
+GET /group/suggest/name/:gname
+    JSON返回以gname开头的group的gid和gname
+
 /*********************************
 *             Search             *
 **********************************/
