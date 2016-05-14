@@ -114,17 +114,17 @@ POST /authentication
 
 GET /talkings
     query.after 返回该时间戳后的数据
-    query.page 返回第几页的数据(若有此参数只返回rows,否则还返回总页数pages)
+    query.page 返回第几页的数据(若有此参数只返回rows,否则返回第1页rows并返回总页数pages)
     JSON返回自己以及所有关注人以及group的talking数据
 
 GET /talkings/u/:uid
     query.after 返回该时间戳后的数据
-    query.page 返回第几页的数据(若有此参数只返回rows,否则还返回总页数pages)
+    query.page 返回第几页的数据(若有此参数只返回rows,否则返回第1页rows并返回总页数pages)
     JSON返回该用户的talking数据
 
 GET /talkings/g/:gid
     query.after 返回该时间戳后的数据
-    query.page 返回第几页的数据(若有此参数只返回rows,否则还返回总页数pages)
+    query.page 返回第几页的数据(若有此参数只返回rows,否则返回第1页rows并返回总页数pages)
     JSON返回该用户组的talking数据
 
 GET /talking/:tid
