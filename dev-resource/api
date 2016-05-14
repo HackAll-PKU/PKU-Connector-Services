@@ -117,6 +117,11 @@ GET /talkings
     query.page 返回第几页的数据(若有此参数只返回rows,否则返回第1页rows并返回总页数pages)
     JSON返回自己以及所有关注人以及group的talking数据
 
+GET /talkings/new
+    query.after 返回该时间戳后的数据
+    JSON返回自己以及所有关注人以及group的新talking个数
+
+
 GET /talkings/u/:uid
     query.after 返回该时间戳后的数据
     query.page 返回第几页的数据(若有此参数只返回rows,否则返回第1页rows并返回总页数pages)
@@ -178,13 +183,13 @@ POST /group
         avatar
     JSON返回gid
 
-PUT /group/:uid
+PUT /group/:gid
     参数:
         同POST /gid
     JSON无返回data
 
 GET /group/suggest/name/:gname
-    JSON返回以gname开头的group的gid和gname
+    JSON返回包含gname的group的gid和gname
 
 /*********************************
 *             Search             *

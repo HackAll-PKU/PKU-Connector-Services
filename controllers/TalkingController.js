@@ -68,6 +68,18 @@ exports.getFollowedTalkings = function (req, res) {
     });
 };
 
+/**
+ * 获取当前登录用户自己以及所有关注人以及group的的说说
+ */
+exports.getNewFollowedTalkingsCount = function (req, res) {
+    var talking = new model.Talking(null, null, null, req.tokenInfo.uid);
+    talking.getNewFollowedTalkingsCount(req.query.after, function (err, result) {
+        if (err)
+            res.status(err.code).json({msg: err.msg});
+        else
+            res.json({msg: "OK", data: result});
+    });
+};
 
 /**
  * 删除说说
