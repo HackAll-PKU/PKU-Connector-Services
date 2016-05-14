@@ -95,5 +95,28 @@ Group.prototype.modifyGroupInfo = function (completionHandler) {
     });
 };
 
+/**
+ * 推荐组名
+ * @param completionHandler 返回闭包,包含err和rows
+ */
+Group.prototype.suggestGroupName = function (completionHandler) {
+    var requestGroupName = this.gname;
+    if (!requestGroupName) {
+        completionHandler({code: 400, msg: "group name不能为空"}, null);
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) completionHandler({code: 500, msg: "连接数据库错误"}, null);
+        connection.query("SELECT `gid`, `gname` FROM `PKU-Connector`.`group` WHERE `gname` LIKE ?",
+            [requestGroupName + '%'],
+            function (err, row) {
+               connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else
+                    completionHandler(null, row);
+            });
+    });
+};
+
 
 exports.Group = Group;

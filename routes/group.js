@@ -18,6 +18,11 @@ router.get('/api/v1/group/:gid', groupController.getGroupInfo);
 /**
  * 更新组信息
  */
-router.put('/api/v1/group/:gid' , groupController.modifyGroupInfo);
+router.put('/api/v1/group/:gid', groupController.modifyGroupInfo);
+
+/**
+ * 根据组名建议组名
+ */
+router.get('/api/v1/group/suggest/name/:gname', groupController.suggestGroupname);
 
 module.exports = router;

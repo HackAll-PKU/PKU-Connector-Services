@@ -41,3 +41,16 @@ exports.modifyGroupInfo = function (req, res) {
             res.json({msg: "OK"});
     });
 };
+
+/**
+ * 根据组名建议组名
+ */
+exports.suggestGroupname = function (req, res) {
+    var group = new model.Group(null, req.params.gname);
+    group.suggestGroupName(function (err, result) {
+        if (err)
+            res.status(err.code).json({msg: err.msg});
+        else
+            res.json({msg: "OK", data: result});
+    });
+};
