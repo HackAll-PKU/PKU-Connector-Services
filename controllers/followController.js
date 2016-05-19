@@ -119,3 +119,16 @@ exports.getGroupFollowerList = function (req, res) {
             res.json({msg: "OK", data: result});
     });
 };
+
+/**
+ * 获取uid的可能认识列表
+ */
+exports.getMaybeKnowList = function (req, res) {
+    var relation = new model.Relation(req.tokenInfo.uid);
+    relation.getMaybeKnowList(function (err, result) {
+        if (err)
+            res.status(err.code).json({msg: err.msg});
+        else
+            res.json({msg: "OK", data: result});
+    });
+};
