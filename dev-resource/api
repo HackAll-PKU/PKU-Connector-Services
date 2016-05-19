@@ -85,6 +85,12 @@ GET /relation/group/:gid/me
 GET /relation/group/:gid/followers
     JSON返回gid的粉丝列表
 
+GET /relation/maybeknow
+    JSON返回可能认识的用户列表
+        uid
+        mid:中间人之一
+        cnt:中间人数目
+
 /********************************
 *               认证             *
 *********************************/

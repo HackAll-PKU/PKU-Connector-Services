@@ -295,7 +295,7 @@ Relation.prototype.getMaybeKnowList = function (completionHandler) {
             return;
         }
         connection.query(
-            'SELECT `fo2`.`follow` AS `uid`, COUNT(`fo2`.`follower`) AS `cnt`, GROUP_CONCAT(`fo2`.`follower`) AS `mid` ' +
+            'SELECT `fo2`.`follow` AS `uid`, SUBSTRING_INDEX(GROUP_CONCAT(`fo2`.`follower`), \',\', 1) AS `mid`, COUNT(`fo2`.`follower`) AS `cnt` ' +
             'FROM `PKU-Connector`.`follow` AS `fo1`, `PKU-Connector`.`follow` AS `fo2` ' +
             'WHERE `fo1`.`follower` = ? AND `fo1`.`follow` = `fo2`.`follower` ' +
             'GROUP BY `uid` ' +
