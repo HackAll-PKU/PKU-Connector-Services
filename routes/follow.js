@@ -51,4 +51,9 @@ router.get('/api/v1/relation/group/:gid/me', followController.getGroupRelation);
  */
 router.get('/api/v1/relation/group/:gid/followers', followController.getGroupFollowerList);
 
+/**
+ * 获取uid的可能认识列表
+ */
+router.get('/api/v1/relation/maybeknow', followController.getMaybeKnowList);
+
 module.exports = router;

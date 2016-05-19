@@ -283,4 +283,32 @@ Relation.prototype.getGroupFollowerList = function (completionHandler) {
     });
 };
 
+/**
+ * 获取uid的可能认识列表
+ * @param completionHandler 返回闭包,包含err,rows
+ */
+Relation.prototype.getMaybeKnowList = function (completionHandler) {
+    var requestUid = this.uid;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
+        connection.query(
+            'SELECT `fo2`.`follow` AS `uid`, COUNT(`fo2`.`follower`) AS `cnt`, GROUP_CONCAT(`fo2`.`follower`) AS `mid` ' +
+            'FROM `PKU-Connector`.`follow` AS `fo1`, `PKU-Connector`.`follow` AS `fo2` ' +
+            'WHERE `fo1`.`follower` = ? AND `fo1`.`follow` = `fo2`.`follower` ' +
+            'GROUP BY `uid` ' +
+            'ORDER BY `cnt` DESC',
+            [requestUid],
+            function (err, rows) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else
+                    completionHandler(null, rows);
+            });
+    });
+};
+
 exports.Relation = Relation;
