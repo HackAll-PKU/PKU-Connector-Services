@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/PKU-Connector-Web.iml" filepath="$PROJECT_DIR$/.idea/PKU-Connector-Web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../PKU-Connector-Services/.idea/PKU-Connector-Services.iml" filepath="$PROJECT_DIR$/../PKU-Connector-Services/.idea/PKU-Connector-Services.iml" />
     </modules>
   </component>
 </project>
