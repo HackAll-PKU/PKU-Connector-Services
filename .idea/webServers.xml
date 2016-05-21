@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="20f51d01-4f97-452b-ab04-3d8f686782b6" name="PKU-Connector-Services" url="http://115.28.141.95">
-        <fileTransfer host="115.28.141.95" port="22" accessType="SFTP" username="root">
+        <fileTransfer host="115.28.141.95" port="22" accessType="SFTP" password="dfe3dfc6dfc5dfdcdfcfdfd3dfd0dfdedf99df9e" username="root">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
