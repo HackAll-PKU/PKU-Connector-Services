@@ -46,5 +46,9 @@
   {
     "path": "^/api/v1/group/suggest/name/\\S+$",
     "method": "GET"
+  },
+  {
+    "path": "^/api/v1/test.*$",
+    "method": "GET"
   }
 ]

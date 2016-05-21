@@ -20,4 +20,8 @@ router.post('/test/:tid', function (req, res) {
     });
 });
 
+router.get('/api/v1/test', function (req, res) {
+    res.send(req.headers["authorization"]);
+});
+
 module.exports = router;
