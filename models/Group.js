@@ -118,7 +118,7 @@ Group.prototype.suggestGroupName = function (completionHandler) {
             completionHandler({code: 500, msg: "连接数据库错误"}, null);
             return;
         }
-        connection.query("SELECT `gid`, `gname` FROM `PKU-Connector`.`group` WHERE `gname` LIKE ?",
+        connection.query("SELECT `gid`, `gname` FROM `PKU-Connector`.`group` WHERE `gname` LIKE ? LIMIT 10",
             ['%' + requestGroupName + '%'],
             function (err, row) {
                 connection.release();
