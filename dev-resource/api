@@ -18,7 +18,7 @@ POST /user
     参数:
         uname
         password
-        nickname
+        nickname(可选)
         avatar(可选,若无则使用默认头像URL)
         background(可选,若无则使用默认背景URL)
         gender(可选)

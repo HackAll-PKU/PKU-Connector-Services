@@ -32,6 +32,10 @@ exports.verifyToken = function (req, res, next) {
     var bearerToken;
     var bearerHeader = req.headers["authorization"];
     if (typeof bearerHeader === 'undefined') {
+        if (req.method == 'OPTIONS') {
+            next();
+            return;
+        }
         if (needAuthenticated(req))
             res.status(401).json({msg: "尚未认证,无法使用此服务"});
         else
