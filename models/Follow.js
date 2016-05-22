@@ -295,11 +295,13 @@ Relation.prototype.getMaybeKnowList = function (completionHandler) {
             return;
         }
         connection.query(
-            'SELECT `fo2`.`follow` AS `uid`, SUBSTRING_INDEX(GROUP_CONCAT(`fo2`.`follower`), \',\', 1) AS `mid`, COUNT(`fo2`.`follower`) AS `cnt` ' +
-            'FROM `PKU-Connector`.`follow` AS `fo1`, `PKU-Connector`.`follow` AS `fo2` ' +
-            'WHERE `fo1`.`follower` = ? AND `fo1`.`follow` = `fo2`.`follower` AND `fo2`.`follow` <> `fo1`.`follower` ' +
+            'SELECT `fo2`.`follow` AS `uid`, CAST(SUBSTRING_INDEX(GROUP_CONCAT(`fo2`.`follower`), \',\', 1) AS UNSIGNED) AS `mid`, COUNT(`fo2`.`follower`) AS `cnt` ' +
+            'FROM `PKU-Connector`.`follow` AS `fo1` JOIN `PKU-Connector`.`follow` AS `fo2` ON `fo1`.`follow` = `fo2`.`follower` ' +
+            'WHERE `fo1`.`follower` = ? AND `fo2`.`follow` <> `fo1`.`follower` ' +
+            'AND NOT EXISTS (SELECT * FROM `PKU-Connector`.`follow` AS `fo3` WHERE `fo3`.`follower` = `fo1`.`follower` AND `fo3`.`follow` = `fo2`.`follow`) ' +
             'GROUP BY `uid` ' +
-            'ORDER BY `cnt` DESC',
+            'ORDER BY `cnt` DESC ' +
+            'LIMIT 5',
             [requestUid],
             function (err, rows) {
                 connection.release();

@@ -151,9 +151,6 @@ POST /talking
         gid(发表到哪个组)
     JSON返回tid
 
-DELETE /talking/:tid
-    JSON返回
-
 /********************************
 *             Comment           *
 *********************************/

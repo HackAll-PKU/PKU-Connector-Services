@@ -185,9 +185,10 @@ Talking.prototype.getFollowedTalkings = function (after, page, completionHandler
         }
         connection.query(
             'SELECT DISTINCT `PKU-Connector`.`talking`.* ' +
-            'FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` ' +
-            'WHERE ((`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
-            'OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`) ' +
+            'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`follow` ON `talking`.`user_uid` = `follow`.`follow` ' +
+            'LEFT JOIN `PKU-Connector`.`user_in_group` ON `talking`.`group_gid` = `user_in_group`.`group_gid`' +
+            'WHERE (`follow`.`follower` = ? ' +
+            'OR `user_in_group`.`user_uid` = ? ' +
             'OR `talking`.`user_uid` = ?) ' +
             (after ? 'AND `talking`.`timestamp` > ? ' : '') +
             'ORDER BY `timestamp` DESC ' +
@@ -202,10 +203,11 @@ Talking.prototype.getFollowedTalkings = function (after, page, completionHandler
                     if (!page) {
                         connection.query(
                             'SELECT COUNT(DISTINCT `PKU-Connector`.`talking`.`tid`) AS `num` ' +
-                            'FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` ' +
-                            'WHERE ((`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
-                            'OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`) ' +
-                            'OR `talking`.`user_uid` = ?)' +
+                            'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`follow` ON `talking`.`user_uid` = `follow`.`follow` ' +
+                            'LEFT JOIN `PKU-Connector`.`user_in_group` ON `talking`.`group_gid` = `user_in_group`.`group_gid`' +
+                            'WHERE (`follow`.`follower` = ? ' +
+                            'OR `user_in_group`.`user_uid` = ? ' +
+                            'OR `talking`.`user_uid` = ?) ' +
                             (after ? ' AND `talking`.`timestamp` > ?' : ''),
                             after ? [requestUid, requestUid, requestUid, after]
                                   : [requestUid, requestUid, requestUid],
@@ -241,9 +243,10 @@ Talking.prototype.getNewFollowedTalkingsCount = function (after, completionHandl
         }
         connection.query(
             'SELECT COUNT(DISTINCT `PKU-Connector`.`talking`.`tid`) AS `num` ' +
-            'FROM `PKU-Connector`.`talking`, `PKU-Connector`.`follow`, `PKU-Connector`.`user_in_group` ' +
-            'WHERE ((`follow`.`follower` = ? AND `talking`.`user_uid` = `follow`.`follow`) ' +
-            'OR (`user_in_group`.`user_uid` = ? AND `talking`.`group_gid` = `user_in_group`.`group_gid`) ' +
+            'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`follow` ON `talking`.`user_uid` = `follow`.`follow` ' +
+            'LEFT JOIN `PKU-Connector`.`user_in_group` ON `talking`.`group_gid` = `user_in_group`.`group_gid`' +
+            'WHERE (`follow`.`follower` = ? ' +
+            'OR `user_in_group`.`user_uid` = ? ' +
             'OR `talking`.`user_uid` = ?) ' +
             'AND `talking`.`timestamp` > ?',
             [requestUid, requestUid, requestUid, after],
