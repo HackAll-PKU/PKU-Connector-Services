@@ -20,7 +20,14 @@ exports.authenticateUser = function (req, res) {
             res.status(401).json({msg: "用户名或密码错误"});
         else {
             var token = jwt.sign({uname: uname, uid: result.uid}, tokenConf.token_secret, tokenConf.options);
-            res.json({token: token, uid: result.uid});
+            jwt.verify(token, tokenConf.token_secret, function(err, decoded) {
+                if (err) {
+                    res.status(500).json({msg: "服务器错误"})
+                }
+                else {
+                    res.json(decoded);
+                }
+            });
         }
     });
 };
