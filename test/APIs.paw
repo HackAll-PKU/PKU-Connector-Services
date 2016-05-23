@@ -191,7 +191,7 @@
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z118"></relationship>
     </object>
     <object type="LMREQUEST" id="z118">
-        <attribute name="body" type="string">[{"data":{"keyValues":[[["uname"],["clt"],true],[["password"],["12"],true]]},"identifier":"com.luckymarmot.BodyFormKeyValueDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"keyValues":[[["uname"],["一颗赛艇"],true],[["password"],["exciting"],true]]},"identifier":"com.luckymarmot.BodyFormKeyValueDynamicValue"}]</attribute>
         <attribute name="uuid" type="string">64858523-9782-4F1A-8E29-95F90DAD9000</attribute>
         <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"DE84AE21-9BA2-4BE9-B950-BBCCAF61A25E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/authentication"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>

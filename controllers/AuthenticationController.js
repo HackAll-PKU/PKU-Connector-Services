@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 var tokenConf = require('../conf/token.json');
 
 /**
- * 验证用户名密码,成功则颁发token
+ * 验证用户名密码,成功则颁发token,并告知uid
  */
 exports.authenticateUser = function (req, res) {
     var uname = req.body.uname;
@@ -20,7 +20,7 @@ exports.authenticateUser = function (req, res) {
             res.status(401).json({msg: "用户名或密码错误"});
         else {
             var token = jwt.sign({uname: uname, uid: result.uid}, tokenConf.token_secret, tokenConf.options);
-            res.json({token: token});
+            res.json({token: token, uid: result.uid});
         }
     });
 };

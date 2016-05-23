@@ -100,7 +100,7 @@ POST /authentication
     参数:
         uname
         password
-    JSON返回token
+    JSON返回token和uid
 
 /********************************
 *            Talking            *
