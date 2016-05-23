@@ -25,6 +25,7 @@ exports.authenticateUser = function (req, res) {
                     res.status(500).json({msg: "服务器错误"})
                 }
                 else {
+                    decoded.token = token;
                     res.json(decoded);
                 }
             });
