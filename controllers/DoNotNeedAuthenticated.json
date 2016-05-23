@@ -50,5 +50,13 @@
   {
     "path": "^/api/v1/test.*$",
     "method": "GET"
+  },
+  {
+    "path": "^/api/v1/talkings/u/\\d+/count$",
+    "method": "GET"
+  },
+  {
+    "path": "^/api/v1/talkings/g/\\d+/count$",
+    "method": "GET"
   }
 ]
