@@ -96,7 +96,7 @@ Talking.prototype.getTalkingsOfUser = function (after, page, completionHandler) 
             return;
         }
         connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ' +
-            (after ? 'AND `timestamp` > ? ' : '') +
+            (after ? 'AND UNIX_TIMESTAMP(`timestamp`) > ? ' : '') +
             'ORDER BY `timestamp` DESC LIMIT ?, ?',
             after ? [requestUid, after, requestOffset, TALKINGS_PER_PAGE]
                 : [requestUid, requestOffset, TALKINGS_PER_PAGE],
@@ -107,7 +107,7 @@ Talking.prototype.getTalkingsOfUser = function (after, page, completionHandler) 
                 } else {
                     if (!page) {
                         connection.query('SELECT COUNT(`tid`) AS `num` FROM `PKU-Connector`.`talking` WHERE `user_uid` = ?' +
-                            (after ? ' AND `timestamp` > ?' : ''),
+                            (after ? ' AND UNIX_TIMESTAMP(`timestamp`) > ?' : ''),
                             after ? [requestUid, after] : [requestUid],
                             function (err, num) {
                                 connection.release();
@@ -170,7 +170,7 @@ Talking.prototype.getTalkingsOfGroup = function (after, page, completionHandler)
             return;
         }
         connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `group_gid` = ? ' +
-            (after ? 'AND `timestamp` > ? ' : '') +
+            (after ? 'AND UNIX_TIMESTAMP(`timestamp`) > ? ' : '') +
             'ORDER BY `timestamp` DESC LIMIT ?, ?',
             after ? [requestGid, after, requestOffset, TALKINGS_PER_PAGE]
                   : [requestGid, requestOffset, TALKINGS_PER_PAGE],
@@ -181,7 +181,7 @@ Talking.prototype.getTalkingsOfGroup = function (after, page, completionHandler)
                 } else {
                     if (!page) {
                         connection.query('SELECT COUNT(`tid`) AS `num` FROM `PKU-Connector`.`talking` WHERE `group_gid` = ?' +
-                            (after ? ' AND `timestamp` > ?' : ''),
+                            (after ? ' AND UNIX_TIMESTAMP(`timestamp`) > ?' : ''),
                             after ? [requestGid, after] : [requestGid],
                             function (err, num) {
                                 connection.release();
@@ -246,7 +246,7 @@ Talking.prototype.getFollowedTalkings = function (after, page, completionHandler
             'WHERE (`follow`.`follower` = ? ' +
             'OR `user_in_group`.`user_uid` = ? ' +
             'OR `talking`.`user_uid` = ?) ' +
-            (after ? 'AND `talking`.`timestamp` > ? ' : '') +
+            (after ? 'AND UNIX_TIMESTAMP(`talking`.`timestamp`) > ? ' : '') +
             'ORDER BY `timestamp` DESC ' +
             'LIMIT ?, ?',
             after ? [requestUid, requestUid, requestUid, after, requestOffset, TALKINGS_PER_PAGE]
@@ -264,7 +264,7 @@ Talking.prototype.getFollowedTalkings = function (after, page, completionHandler
                             'WHERE (`follow`.`follower` = ? ' +
                             'OR `user_in_group`.`user_uid` = ? ' +
                             'OR `talking`.`user_uid` = ?) ' +
-                            (after ? ' AND `talking`.`timestamp` > ?' : ''),
+                            (after ? ' AND UNIX_TIMESTAMP(`talking`.`timestamp`) > ?' : ''),
                             after ? [requestUid, requestUid, requestUid, after]
                                   : [requestUid, requestUid, requestUid],
                             function (err, num) {
@@ -304,7 +304,7 @@ Talking.prototype.getNewFollowedTalkingsCount = function (after, completionHandl
             'WHERE (`follow`.`follower` = ? ' +
             'OR `user_in_group`.`user_uid` = ? ' +
             'OR `talking`.`user_uid` = ?) ' +
-            'AND `talking`.`timestamp` > ?',
+            'AND UNIX_TIMESTAMP(`talking`.`timestamp`) > ?',
             [requestUid, requestUid, requestUid, after],
             function (err, num) {
                 connection.release();
