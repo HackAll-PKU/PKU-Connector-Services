@@ -43,11 +43,37 @@ exports.getTalkingsOfUser = function (req, res) {
 };
 
 /**
+ * 获取uid的说说数
+ */
+exports.getTalkingCountOfUser = function (req, res) {
+    var talking = new model.Talking(null, null, null, req.params.uid);
+    talking.getTalkingCountOfUser(function (err, result) {
+        if (err)
+            res.status(err.code).json({msg: err.msg});
+        else
+            res.json({msg: "OK", data: result});
+    });
+};
+
+/**
  * 获取gid的所有说说
  */
 exports.getTalkingsOfGroup = function (req, res) {
     var talking = new model.Talking(null, null, null, null, req.params.gid);
     talking.getTalkingsOfGroup(req.query.after, req.query.page, function (err, result) {
+        if (err)
+            res.status(err.code).json({msg: err.msg});
+        else
+            res.json({msg: "OK", data: result});
+    });
+};
+
+/**
+ * 获取gid的说说数
+ */
+exports.getTalkingCountOfGroup = function (req, res) {
+    var talking = new model.Talking(null, null, null, null, req.params.gid);
+    talking.getTalkingCountOfGroup(function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else

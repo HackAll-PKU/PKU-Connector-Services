@@ -124,6 +124,34 @@ Talking.prototype.getTalkingsOfUser = function (after, page, completionHandler) 
 };
 
 /**
+ * 获取uid的说说数
+ *  @param completionHandler 返回闭包,包含err和rows
+ */
+Talking.prototype.getTalkingCountOfUser = function (completionHandler) {
+    var requestUid = this.user_uid;
+    if (!requestUid) {
+        completionHandler({code: 400, msg: "blank uid"}, null);
+        return;
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
+        connection.query('SELECT COUNT(`tid`) AS `cnt` FROM `PKU-Connector`.`talking` WHERE `user_uid` = ?',
+            [requestUid],
+            function (err, rows) {
+                connection.release();
+                if (err) {
+                    completionHandler({code: 400, msg: err.code}, null);
+                } else {
+                    completionHandler(null, rows[0].cnt);
+                }
+            });
+    });
+};
+
+/**
  * 获取gid的说说
  *  @param after 查询此timestamp以后的说说
  *  @param page 页数
@@ -164,6 +192,34 @@ Talking.prototype.getTalkingsOfGroup = function (after, page, completionHandler)
                         connection.release();
                         completionHandler(null, {rows: rows});
                     }
+                }
+            });
+    });
+};
+
+/**
+ * 获取gid的说说数
+ *  @param completionHandler 返回闭包,包含err和rows
+ */
+Talking.prototype.getTalkingCountOfGroup = function (completionHandler) {
+    var requestGid = this.group_gid;
+    if (!requestGid) {
+        completionHandler({code: 400, msg: "blank gid"}, null);
+        return;
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
+        connection.query('SELECT COUNT(`tid`) AS `cnt` FROM `PKU-Connector`.`talking` WHERE `group_gid` = ?',
+            [requestGid],
+            function (err, rows) {
+                connection.release();
+                if (err) {
+                    completionHandler({code: 400, msg: err.code}, null);
+                } else {
+                    completionHandler(null, rows[0].cnt);
                 }
             });
     });

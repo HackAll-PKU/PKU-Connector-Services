@@ -22,9 +22,19 @@ router.get('/api/v1/talking/:tid' ,talkingController.getTalkingInfo);
 router.get('/api/v1/talkings/u/:uid', talkingController.getTalkingsOfUser);
 
 /**
+ * 获取该用户的说说数
+ */
+router.get('/api/v1/talkings/u/:uid/count', talkingController.getTalkingCountOfUser);
+
+/**
  * 获取该用户组的说说
  */
 router.get('/api/v1/talkings/g/:gid', talkingController.getTalkingsOfGroup);
+
+/**
+ * 获取该用户组的说说
+ */
+router.get('/api/v1/talkings/g/:gid/count', talkingController.getTalkingCountOfGroup);
 
 /**
  * 获取当前登录用户所有关注人以及group的新说说个数
