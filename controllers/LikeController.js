@@ -18,7 +18,7 @@ exports.likeUser = function (req,res) {
  * 取赞说说
  */
 exports.unlikeUser = function (req,res) {
-    var likeRelation = new model.likeRelation(req.tokenInfo.uid, req.params.tid);
+    var likeRelation = new model.LikeRelation(req.tokenInfo.uid, req.params.tid);
     likeRelation.unlikeUser(function(err){
         if (err)
             res.status(err.code).json({msg:err.msg});
@@ -31,7 +31,7 @@ exports.unlikeUser = function (req,res) {
  * 获取当前说说赞数
  */
 exports.getLikeCount = function(req,res){
-    var likeRelation = new model.likeRelation(req.tokenInfo.uid, req.params.tid);
+    var likeRelation = new model.LikeRelation(req.tokenInfo.uid, req.params.tid);
     likeRelation.getLikeCount(function (err) {
         if (err)
             res.status(err.code).json({msg: err.msg});
