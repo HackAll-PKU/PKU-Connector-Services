@@ -50,9 +50,10 @@ Talking.prototype.addTalkingToDatabase = function (completionHandler) {
 
 /**
  * 获取说说
+ *  @param currentUid 当前登录用户的uid
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getTalkingInfo = function (completionHandler) {
+Talking.prototype.getTalkingInfo = function (currentUid, completionHandler) {
     var requestTid = this.tid;
     if (!requestTid) {
         completionHandler({code: 400, msg: "blank tid"}, null);
@@ -63,8 +64,12 @@ Talking.prototype.getTalkingInfo = function (completionHandler) {
             completionHandler({code: 500, msg: "连接数据库错误"}, null);
             return;
         }
-        connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `tid` = ?',
-            [requestTid],
+        connection.query(
+            'SELECT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked` ' +
+            'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`like` ' +
+            'ON `talking`.`tid` = `like`.`talking_tid` AND `like`.`user_uid` = ? ' +
+            'WHERE `talking`.`tid` = ?',
+            [currentUid, requestTid],
             function (err, rows) {
                 connection.release();
                 if (err)
@@ -79,11 +84,12 @@ Talking.prototype.getTalkingInfo = function (completionHandler) {
 
 /**
  * 获取uid的说说
+ *  @param currentUid 当前登录用户的uid
  *  @param after 查询此timestamp以后的说说
  *  @param page 页数
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getTalkingsOfUser = function (after, page, completionHandler) {
+Talking.prototype.getTalkingsOfUser = function (currentUid, after, page, completionHandler) {
     var requestUid = this.user_uid;
     var requestOffset = ((page || 1) - 1) * TALKINGS_PER_PAGE;
     if (!requestUid) {
@@ -95,11 +101,15 @@ Talking.prototype.getTalkingsOfUser = function (after, page, completionHandler) 
             completionHandler({code: 500, msg: "连接数据库错误"}, null);
             return;
         }
-        connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `user_uid` = ? ' +
-            (after ? 'AND UNIX_TIMESTAMP(`timestamp`) > ? ' : '') +
-            'ORDER BY `timestamp` DESC LIMIT ?, ?',
-            after ? [requestUid, after, requestOffset, TALKINGS_PER_PAGE]
-                : [requestUid, requestOffset, TALKINGS_PER_PAGE],
+        connection.query(
+            'SELECT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked` ' +
+            'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`like` ' +
+            'ON `talking`.`tid` = `like`.`talking_tid` AND `like`.`user_uid` = ? '+
+            'WHERE `talking`.`user_uid` = ? ' +
+            (after ? 'AND UNIX_TIMESTAMP(`talking`.`timestamp`) > ? ' : '') +
+            'ORDER BY `talking`.`timestamp` DESC LIMIT ?, ?',
+            after ? [currentUid, requestUid, after, requestOffset, TALKINGS_PER_PAGE]
+                : [currentUid, requestUid, requestOffset, TALKINGS_PER_PAGE],
             function (err, rows) {
                 if (err) {
                     connection.release();
@@ -153,11 +163,12 @@ Talking.prototype.getTalkingCountOfUser = function (completionHandler) {
 
 /**
  * 获取gid的说说
+ *  @param currentUid 当前登录用户的uid
  *  @param after 查询此timestamp以后的说说
  *  @param page 页数
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getTalkingsOfGroup = function (after, page, completionHandler) {
+Talking.prototype.getTalkingsOfGroup = function (currentUid, after, page, completionHandler) {
     var requestGid = this.group_gid;
     var requestOffset = ((page || 1) - 1) * TALKINGS_PER_PAGE;
     if (!requestGid) {
@@ -169,11 +180,14 @@ Talking.prototype.getTalkingsOfGroup = function (after, page, completionHandler)
             completionHandler({code: 500, msg: "连接数据库错误"}, null);
             return;
         }
-        connection.query('SELECT * FROM `PKU-Connector`.`talking` WHERE `group_gid` = ? ' +
-            (after ? 'AND UNIX_TIMESTAMP(`timestamp`) > ? ' : '') +
-            'ORDER BY `timestamp` DESC LIMIT ?, ?',
-            after ? [requestGid, after, requestOffset, TALKINGS_PER_PAGE]
-                  : [requestGid, requestOffset, TALKINGS_PER_PAGE],
+        connection.query('SELECT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked` ' +
+            'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`like` ' +
+            'ON `talking`.`tid` = `like`.`talking_tid` AND `like`.`user_uid` = ? ' +
+            'WHERE `talking`.`group_gid` = ? ' +
+            (after ? 'AND UNIX_TIMESTAMP(`talking`.`timestamp`) > ? ' : '') +
+            'ORDER BY `talking`.`timestamp` DESC LIMIT ?, ?',
+            after ? [currentUid, requestGid, after, requestOffset, TALKINGS_PER_PAGE]
+                  : [currentUid, requestGid, requestOffset, TALKINGS_PER_PAGE],
             function (err, rows) {
                 if (err) {
                     connection.release();
@@ -227,11 +241,12 @@ Talking.prototype.getTalkingCountOfGroup = function (completionHandler) {
 
 /**
  * 获取当前登录用户自己以及所有关注人以及group的说说
+ *  @param currentUid 当前登录用户的uid
  *  @param after 查询此timestamp以后的说说
  *  @param page 页数
  *  @param completionHandler 返回闭包,包含err和rows
  */
-Talking.prototype.getFollowedTalkings = function (after, page, completionHandler) {
+Talking.prototype.getFollowedTalkings = function (currentUid, after, page, completionHandler) {
     var requestUid = this.user_uid;
     var requestOffset = ((page || 1) - 1) * TALKINGS_PER_PAGE;
     pool.getConnection(function (err, connection) {
@@ -240,17 +255,18 @@ Talking.prototype.getFollowedTalkings = function (after, page, completionHandler
             return;
         }
         connection.query(
-            'SELECT DISTINCT `PKU-Connector`.`talking`.* ' +
+            'SELECT DISTINCT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked` ' +
             'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`follow` ON `talking`.`user_uid` = `follow`.`follow` ' +
-            'LEFT JOIN `PKU-Connector`.`user_in_group` ON `talking`.`group_gid` = `user_in_group`.`group_gid`' +
+            'LEFT JOIN `PKU-Connector`.`user_in_group` ON `talking`.`group_gid` = `user_in_group`.`group_gid` ' +
+            'LEFT JOIN `PKU-Connector`.`like` ON `talking`.`tid` = `like`.`talking_tid` AND `like`.`user_uid` = ? ' +
             'WHERE (`follow`.`follower` = ? ' +
             'OR `user_in_group`.`user_uid` = ? ' +
             'OR `talking`.`user_uid` = ?) ' +
             (after ? 'AND UNIX_TIMESTAMP(`talking`.`timestamp`) > ? ' : '') +
             'ORDER BY `timestamp` DESC ' +
             'LIMIT ?, ?',
-            after ? [requestUid, requestUid, requestUid, after, requestOffset, TALKINGS_PER_PAGE]
-                  : [requestUid, requestUid, requestUid, requestOffset, TALKINGS_PER_PAGE],
+            after ? [currentUid, requestUid, requestUid, requestUid, after, requestOffset, TALKINGS_PER_PAGE]
+                  : [currentUid, requestUid, requestUid, requestUid, requestOffset, TALKINGS_PER_PAGE],
             function (err, rows) {
                 if (err) {
                     connection.release();
@@ -357,15 +373,25 @@ Talking.prototype.deleteTalking = function (completionHandler) {
                         connection.release();
                         completionHandler({code: err.code, msg: err.msg}, null);
                     } else {
-                        //删除说说
-                        connection.query('DELETE FROM `PKU-Connector`.`talking` WHERE `tid` = ?', [requestTid],
-                            function (err, result2) {
-                                connection.release();
-                                if (err) completionHandler({code: 400, msg: err.code}, null);
-                                else completionHandler(null, {
-                                    affectedTalkings: result2.affectedRows,
-                                    affectedComments: result
-                                });
+                        //删除所有的赞
+                        connection.query('DELETE FROM `PKU-Connector`.`like` WHERE `talking_tid` = ?', [requestTid],
+                            function (err) {
+                                if (err) {
+                                    connection.release();
+                                    completionHandler({code: 400, msg: err.code}, null);
+                                } else {
+                                    //删除说说
+                                    connection.query('DELETE FROM `PKU-Connector`.`talking` WHERE `tid` = ?', [requestTid],
+                                        function (err, result2) {
+                                            connection.release();
+                                            if (err) completionHandler({code: 400, msg: err.code}, null);
+                                            else completionHandler(null, {
+                                                affectedTalkings: result2.affectedRows,
+                                                affectedComments: result
+                                            });
+                                        }
+                                    );
+                                }
                             }
                         );
                     }

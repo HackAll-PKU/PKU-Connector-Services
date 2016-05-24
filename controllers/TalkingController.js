@@ -21,7 +21,7 @@ exports.postNewTalking = function (req, res) {
  */
 exports.getTalkingInfo = function (req, res) {
     var talking = new model.Talking(req.params.tid);
-    talking.getTalkingInfo(function (err, result) {
+    talking.getTalkingInfo(req.tokenInfo ? req.tokenInfo.uid : null, function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
@@ -34,7 +34,7 @@ exports.getTalkingInfo = function (req, res) {
  */
 exports.getTalkingsOfUser = function (req, res) {
     var talking = new model.Talking(null, null, null, req.params.uid);
-    talking.getTalkingsOfUser(req.query.after, req.query.page, function (err, result) {
+    talking.getTalkingsOfUser(req.tokenInfo ? req.tokenInfo.uid : null, req.query.after, req.query.page, function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
@@ -60,7 +60,7 @@ exports.getTalkingCountOfUser = function (req, res) {
  */
 exports.getTalkingsOfGroup = function (req, res) {
     var talking = new model.Talking(null, null, null, null, req.params.gid);
-    talking.getTalkingsOfGroup(req.query.after, req.query.page, function (err, result) {
+    talking.getTalkingsOfGroup(req.tokenInfo ? req.tokenInfo.uid : null, req.query.after, req.query.page, function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
@@ -86,7 +86,7 @@ exports.getTalkingCountOfGroup = function (req, res) {
  */
 exports.getFollowedTalkings = function (req, res) {
     var talking = new model.Talking(null, null, null, req.tokenInfo.uid);
-    talking.getFollowedTalkings(req.query.after, req.query.page, function (err, result) {
+    talking.getFollowedTalkings(req.tokenInfo ? req.tokenInfo.uid : null, req.query.after, req.query.page, function (err, result) {
         if (err)
             res.status(err.code).json({msg: err.msg});
         else
@@ -95,7 +95,7 @@ exports.getFollowedTalkings = function (req, res) {
 };
 
 /**
- * 获取当前登录用户自己以及所有关注人以及group的的说说
+ * 获取当前登录用户自己以及所有关注人以及group的的说说数
  */
 exports.getNewFollowedTalkingsCount = function (req, res) {
     var talking = new model.Talking(null, null, null, req.tokenInfo.uid);
