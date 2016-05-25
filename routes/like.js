@@ -16,9 +16,4 @@ router.post('/api/v1/like/:tid',likeController.likeUser);
  */
 router.delete('/api/v1/like/:tid', likeController.unlikeUser);
 
-/**
- * 获取当前说说赞数
- */
-router.get('/api/v1/like/:tid',likeController.getLikeCount);
-
 module.exports = router;

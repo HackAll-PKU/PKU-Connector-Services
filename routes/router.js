@@ -18,6 +18,10 @@ module.exports = function(app) {
     // 说说相关的api模块
     var talkingHandler = require('./talking.js');
     app.use(talkingHandler);
+    app.use(groupHandler);
+    // 赞相关的api模块
+    var likeHandler = require('./like.js');
+    app.use(likeHandler);
     // 评论相关的api模块
     var commentHandler = require('./comment.js');
     app.use(commentHandler);

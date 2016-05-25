@@ -41,6 +41,7 @@ LikeRelation.prototype.likeUser = function (completionHandler) {
             });
     });
 };
+
 /**
  * 取赞tid
  * @param completionHandler 返回闭包,包含err
@@ -68,30 +69,5 @@ LikeRelation.prototype.unlikeUser = function (completionHandler) {
         });
     });
 };
-/**
- * 获取当前说说赞数
- */
-LikeRelation.prototype.getLikeCount = function (completionHandler) {
-    var userUid = this.user_uid;
-    var talkingTid = this.talking_tid;
-    if (!talkingTid){
-        completionHandler({code: 400, msg: "blank tid"}, null);
-        return;
-    }
-    pool.getConnection(function (err,connection) {
-        if(err){
-            completionHandler({code:500,msg:"连接数据库错误"},null);
-            return;
-        }
-        connection.query('SELECT COUNT(`user_uid`) AS `cnt` FROM `PKU-Connector`.`like` WHERE `talking_tid` = ?',[talkingTid],
-            function (err,rows) {
-                connection.release();
-                if (err) {
-                    completionHandler({code: 400, msg: err.code}, null);
-                } else {
-                    completionHandler(null, rows[0].cnt);
-                }
-            });
-    });
-};
+
 exports.LikeRelation = LikeRelation;
