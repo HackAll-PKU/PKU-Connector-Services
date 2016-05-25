@@ -65,16 +65,17 @@ Talking.prototype.getTalkingInfo = function (currentUid, completionHandler) {
             return;
         }
         connection.query(
-            'SELECT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked` ' +
+            'SELECT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked`, COUNT(`like2`.`user_uid`) AS `likes` ' +
             'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`like` ' +
             'ON `talking`.`tid` = `like`.`talking_tid` AND `like`.`user_uid` = ? ' +
+            'LEFT JOIN `PKU-Connector`.`like` AS `like2` ON `talking`.`tid` = `like2`.`talking_tid` ' +
             'WHERE `talking`.`tid` = ?',
             [currentUid, requestTid],
             function (err, rows) {
                 connection.release();
                 if (err)
                     completionHandler({code: 400, msg: err.code}, null);
-                else if (rows.length > 0)
+                else if (rows.length > 0 && rows[0].tid)
                     completionHandler(null, rows[0]);
                 else
                     completionHandler({code: 400, msg: "没有此说说"}, null);
@@ -102,11 +103,12 @@ Talking.prototype.getTalkingsOfUser = function (currentUid, after, page, complet
             return;
         }
         connection.query(
-            'SELECT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked` ' +
-            'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`like` ' +
-            'ON `talking`.`tid` = `like`.`talking_tid` AND `like`.`user_uid` = ? '+
+            'SELECT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked`, COUNT(`like2`.`user_uid`) AS `likes` ' +
+            'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`like` ON `talking`.`tid` = `like`.`talking_tid` AND `like`.`user_uid` = ? ' +
+            'LEFT JOIN `PKU-Connector`.`like` AS `like2` ON `talking`.`tid` = `like2`.`talking_tid` '+
             'WHERE `talking`.`user_uid` = ? ' +
             (after ? 'AND UNIX_TIMESTAMP(`talking`.`timestamp`) > ? ' : '') +
+            'GROUP BY `talking`.`tid` ' +
             'ORDER BY `talking`.`timestamp` DESC LIMIT ?, ?',
             after ? [currentUid, requestUid, after, requestOffset, TALKINGS_PER_PAGE]
                 : [currentUid, requestUid, requestOffset, TALKINGS_PER_PAGE],
@@ -180,11 +182,13 @@ Talking.prototype.getTalkingsOfGroup = function (currentUid, after, page, comple
             completionHandler({code: 500, msg: "连接数据库错误"}, null);
             return;
         }
-        connection.query('SELECT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked` ' +
+        connection.query('SELECT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked`, COUNT(`like2`.`user_uid`) AS `likes` ' +
             'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`like` ' +
             'ON `talking`.`tid` = `like`.`talking_tid` AND `like`.`user_uid` = ? ' +
+            'LEFT JOIN `PKU-Connector`.`like` AS `like2` ON `talking`.`tid` = `like2`.`talking_tid` ' +
             'WHERE `talking`.`group_gid` = ? ' +
             (after ? 'AND UNIX_TIMESTAMP(`talking`.`timestamp`) > ? ' : '') +
+            'GROUP BY `talking`.`tid` ' +
             'ORDER BY `talking`.`timestamp` DESC LIMIT ?, ?',
             after ? [currentUid, requestGid, after, requestOffset, TALKINGS_PER_PAGE]
                   : [currentUid, requestGid, requestOffset, TALKINGS_PER_PAGE],
@@ -255,14 +259,16 @@ Talking.prototype.getFollowedTalkings = function (currentUid, after, page, compl
             return;
         }
         connection.query(
-            'SELECT DISTINCT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked` ' +
+            'SELECT DISTINCT `talking`.*, (CASE WHEN `like`.`user_uid` IS NULL THEN 0 ELSE 1 END) AS `liked`, COUNT(`like2`.`user_uid`) AS `likes` ' +
             'FROM `PKU-Connector`.`talking` LEFT JOIN `PKU-Connector`.`follow` ON `talking`.`user_uid` = `follow`.`follow` ' +
             'LEFT JOIN `PKU-Connector`.`user_in_group` ON `talking`.`group_gid` = `user_in_group`.`group_gid` ' +
             'LEFT JOIN `PKU-Connector`.`like` ON `talking`.`tid` = `like`.`talking_tid` AND `like`.`user_uid` = ? ' +
+            'LEFT JOIN `PKU-Connector`.`like` AS `like2` ON `talking`.`tid` = `like2`.`talking_tid` ' +
             'WHERE (`follow`.`follower` = ? ' +
             'OR `user_in_group`.`user_uid` = ? ' +
             'OR `talking`.`user_uid` = ?) ' +
             (after ? 'AND UNIX_TIMESTAMP(`talking`.`timestamp`) > ? ' : '') +
+            'GROUP BY `talking`.`tid` ' +
             'ORDER BY `timestamp` DESC ' +
             'LIMIT ?, ?',
             after ? [currentUid, requestUid, requestUid, requestUid, after, requestOffset, TALKINGS_PER_PAGE]
