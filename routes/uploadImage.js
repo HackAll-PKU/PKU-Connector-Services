@@ -6,7 +6,7 @@ var router = express.Router();
 var multer = require('multer');
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, './public/uploads')
+        cb(null, '/home/wwwroot/pikkacho.cn/uploads/')
     },
     filename: function(req, file, cb) {
         var fileFormat = (file.originalname).split(".");

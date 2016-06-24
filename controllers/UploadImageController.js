@@ -10,7 +10,7 @@ exports.uploadImage = function (req, res) {
 
     if (req.files) {
         var filenames = req.files.map(function (oneImage) {
-            return "uploads/" + oneImage.filename
+            return "/home/wwwroot/pikkacho.cn/uploads/" + oneImage.filename
         });
         res.json({
             msg: "OK",
