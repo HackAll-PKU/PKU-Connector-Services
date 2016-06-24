@@ -121,6 +121,19 @@ exports.getGroupFollowerList = function (req, res) {
 };
 
 /**
+ * 推荐用户昵称
+ */
+exports.suggestUserNickname = function (req, res) {
+    var relation = new model.Relation(req.tokenInfo.uid);
+    relation.suggestUserNickname(req.params.nickname, function (err, result) {
+        if (err)
+            res.status(err.code).json({msg: err.msg});
+        else
+            res.json({msg: "OK", data: result});
+    });
+};
+
+/**
  * 获取uid的可能认识列表
  */
 exports.getMaybeKnowList = function (req, res) {

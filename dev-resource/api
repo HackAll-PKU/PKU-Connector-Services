@@ -85,6 +85,9 @@ GET /relation/group/:gid/me
 GET /relation/group/:gid/followers
     JSON返回gid的粉丝列表
 
+GET /suggest/user/nickname/:nickname
+    JSON返回昵称包含nickname的用户的uid和nickname
+
 GET /relation/maybeknow
     JSON返回可能认识的用户列表
         uid

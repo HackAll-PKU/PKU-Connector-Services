@@ -52,6 +52,11 @@ router.get('/api/v1/relation/group/:gid/me', followController.getGroupRelation);
 router.get('/api/v1/relation/group/:gid/followers', followController.getGroupFollowerList);
 
 /**
+ * 建议用户昵称
+ */
+router.get('/api/v1/suggest/user/nickname/:nickname', followController.suggestUserNickname);
+
+/**
  * 获取uid的可能认识列表
  */
 router.get('/api/v1/relation/maybeknow', followController.getMaybeKnowList);

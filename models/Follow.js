@@ -284,6 +284,32 @@ Relation.prototype.getGroupFollowerList = function (completionHandler) {
 };
 
 /**
+ * 推荐用户昵称
+ * @param requestUserNickname 关键字
+ * @param completionHandler 返回闭包,包含err,rows
+ */
+Relation.prototype.suggestUserNickname = function (requestUserNickname, completionHandler) {
+    var requestUid = this.uid;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
+        connection.query('SELECT DISTINCT `uid`, `nickname` FROM `PKU-Connector`.`follow` ' +
+            'LEFT JOIN `PKU-Connector`.`user` ON (`follow` = `uid` AND `follower` = ?) OR (`follower` = `uid` AND `follow` = ?) ' +
+            'WHERE `uid` IS NOT NULL AND `nickname` LIKE ? LIMIT 10',
+            [requestUid, requestUid, '%' + requestUserNickname + '%'],
+            function (err, rows) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else
+                    completionHandler(null, rows);
+            });
+    });
+};
+
+/**
  * 获取uid的可能认识列表
  * @param completionHandler 返回闭包,包含err,rows
  */
