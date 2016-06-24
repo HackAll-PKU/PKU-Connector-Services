@@ -5,7 +5,7 @@
     <databaseInfo>
         <version>134481920</version>
         <UUID>29DF4DA1-D34D-405E-84E2-7D54D2828DBD</UUID>
-        <nextObjectID>217</nextObjectID>
+        <nextObjectID>222</nextObjectID>
         <metadata>
             <plist version="1.0">
                 <dict>
@@ -1221,5 +1221,66 @@
         <relationship name="groupforheaders" type="0/1" destination="LMREQUESTGROUP"></relationship>
         <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z215"></relationship>
+    </object>
+    <object type="LMKEYVALUE" id="z218">
+        <attribute name="value" type="string"></attribute>
+        <attribute name="order" type="int64">0</attribute>
+        <attribute name="name" type="string"></attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <relationship name="groupforbodyparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforheaders" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z220"></relationship>
+    </object>
+    <object type="LMREQUESTGROUP" id="z219">
+        <attribute name="uuid" type="string">C707F100-E707-46F3-925B-D0995610C255</attribute>
+        <attribute name="order" type="int64">6</attribute>
+        <attribute name="name" type="string">上传</attribute>
+        <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM"></relationship>
+        <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM" idrefs="z221 z220"></relationship>
+        <relationship name="bodyparameters" type="0/0" destination="LMKEYVALUE"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE"></relationship>
+        <relationship name="urlparameters" type="0/0" destination="LMKEYVALUE"></relationship>
+    </object>
+    <object type="LMREQUEST" id="z220">
+        <attribute name="body" type="string">[{"data":{"keyValues":[[["image"],[{"data":{"bookmarkData":"Ym9vawgDAAAAAAQQMAAAAEOQVbFBxicKs8dhRJtnQSkx1JDO5XAQ1t1WFfQ9slKc+AEAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAFAAAAAQEAAGNqamx0AAAACQAAAAEBAABEb3dubG9hZHMAAAAGAAAAAQEAADEuanBlZwAAEAAAAAEGAAAQAAAAIAAAADAAAABEAAAACAAAAAQDAAA2yxEAAAAAAAgAAAAEAwAAs9URAAAAAAAIAAAABAMAAMT6EQAAAAAACAAAAAQDAAC3o+oEAAAAABAAAAABBgAAbAAAAHwAAACMAAAAnAAAAAgAAAAABAAAQbz+vH0AAAAYAAAAAQIAAAEAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAgAAAAEAwAAAgAAAAAAAAAKAAAAAQEAAENoZW5MZXRpYW4AAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAAAAM3QAAAAIAAAAAAQAAEG6MX4\\/AAAAJAAAAAEBAAAwQUU3N0U3MS00MzU3LTNCODgtQjdFOS1FREE4NzE4MTQwQkYYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAAAAAAABBQAAGgAAAAEBAABOU1VSTERvY3VtZW50SWRlbnRpZmllcktleQAABAAAAAMDAADDCQAA2AAAAP7\\/\\/\\/8BAAAAAAAAABEAAAAEEAAAVAAAAAAAAAAFEAAArAAAAAAAAAAQEAAA1AAAAAAAAABAEAAAxAAAAAAAAAACIAAAtAEAAAAAAAAFIAAAJAEAAAAAAAAQIAAANAEAAAAAAAARIAAAaAEAAAAAAAASIAAASAEAAAAAAAATIAAAWAEAAAAAAAAgIAAAlAEAAAAAAAAwIAAAwAEAAAAAAAABwAAA9AAAAAAAAAARwAAABAEAAAAAAAASwAAAGAEAAAAAAAAQ0AAABAAAAAAAAADIAQCA7AEAAAAAAAA="},"identifier":"com.luckymarmot.FileContentDynamicValue"}],true],[["image"],[{"data":{"bookmarkData":"Ym9va9ACAAAAAAQQMAAAAAavpjLDfkOrWjNRJo4ayfnDtwrw+NmgVrVbI4\\/zFkT0zAEAAAQAAAADAwAAABgAKAUAAAABAQAAVXNlcnMAAAAFAAAAAQEAAGNqamx0AAAACQAAAAEBAABEb3dubG9hZHMAAAAMAAAAAQEAADHlia\\/mnKwuanBlZxAAAAABBgAAEAAAACAAAAAwAAAARAAAAAgAAAAEAwAANssRAAAAAAAIAAAABAMAALPVEQAAAAAACAAAAAQDAADE+hEAAAAAAAgAAAAEAwAA\\/qbqBAAAAAAQAAAAAQYAAHAAAACAAAAAkAAAAKAAAAAIAAAAAAQAAEG8\\/rx9AAAAGAAAAAECAAABAAAAAAAAAA8AAAAAAAAAAAAAAAAAAAAIAAAABAMAAAIAAAAAAAAACgAAAAEBAABDaGVuTGV0aWFuAAAEAAAAAwMAAPUBAAAIAAAAAQkAAGZpbGU6Ly8vDAAAAAEBAABNYWNpbnRvc2ggSEQIAAAABAMAAAAAADN0AAAACAAAAAAEAABBujF+PwAAACQAAAABAQAAMEFFNzdFNzEtNDM1Ny0zQjg4LUI3RTktRURBODcxODE0MEJGGAAAAAECAACBAAAAAQAAAO8TAAABAAAAAAAAAAAAAAABAAAAAQEAAC8AAAAAAAAAAQUAAMwAAAD+\\/\\/\\/\\/AQAAAAAAAAAQAAAABBAAAFgAAAAAAAAABRAAALAAAAAAAAAAEBAAANgAAAAAAAAAQBAAAMgAAAAAAAAAAiAAALgBAAAAAAAABSAAACgBAAAAAAAAECAAADgBAAAAAAAAESAAAGwBAAAAAAAAEiAAAEwBAAAAAAAAEyAAAFwBAAAAAAAAICAAAJgBAAAAAAAAMCAAAMQBAAAAAAAAAcAAAPgAAAAAAAAAEcAAAAgBAAAAAAAAEsAAABwBAAAAAAAAENAAAAQAAAAAAAAA"},"identifier":"com.luckymarmot.FileContentDynamicValue"}],true]]},"identifier":"com.luckymarmot.BodyMultipartFormDataDynamicValue"}]</attribute>
+        <attribute name="uuid" type="string">9EF7FA38-E8DF-4210-A5BB-83B432CDB9DF</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"DE84AE21-9BA2-4BE9-B950-BBCCAF61A25E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/image"]</attribute>
+        <attribute name="storecookies" type="bool">1</attribute>
+        <attribute name="sendcookies" type="bool">1</attribute>
+        <attribute name="redirectmethod" type="bool">0</attribute>
+        <attribute name="redirectauthorization" type="bool">0</attribute>
+        <attribute name="method" type="string">POST</attribute>
+        <attribute name="followredirects" type="bool">0</attribute>
+        <attribute name="order" type="int64">0</attribute>
+        <attribute name="name" type="string">上传图片</attribute>
+        <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z219"></relationship>
+        <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z218"></relationship>
+    </object>
+    <object type="LMREQUEST" id="z221">
+        <attribute name="uuid" type="string">EAF8681A-DA71-4274-8E09-153114D2A07B</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/",{"data":{"request":"9EF7FA38-E8DF-4210-A5BB-83B432CDB9DF","keyPath":["data[0]"],"format":1},"identifier":"com.luckymarmot.ResponseBodyPathDynamicValue"}]</attribute>
+        <attribute name="storecookies" type="bool">1</attribute>
+        <attribute name="sendcookies" type="bool">1</attribute>
+        <attribute name="redirectmethod" type="bool">0</attribute>
+        <attribute name="redirectauthorization" type="bool">0</attribute>
+        <attribute name="method" type="string">GET</attribute>
+        <attribute name="followredirects" type="bool">0</attribute>
+        <attribute name="order" type="int64">1</attribute>
+        <attribute name="name" type="string">获取上传的图片</attribute>
+        <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z219"></relationship>
+        <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z222"></relationship>
+    </object>
+    <object type="LMKEYVALUE" id="z222">
+        <attribute name="value" type="string"></attribute>
+        <attribute name="order" type="int64">0</attribute>
+        <attribute name="name" type="string"></attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <relationship name="groupforbodyparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforheaders" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z221"></relationship>
     </object>
 </database>

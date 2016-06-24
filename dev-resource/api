@@ -1,5 +1,5 @@
 api版本
-    v0.2
+    v0.3
 
 api通则:
     base URL: http://pikkacho.cn/api/v1
@@ -209,3 +209,13 @@ GET /search/talkings/:searchwords
 
 GET /search/users/:searchwords
     JSON返回搜索到的所有的user数据  详见User
+
+
+
+/*********************************
+*             Upload             *
+**********************************/
+
+POST /image
+    使用multipart/form-data上传
+    JSON返回所保存的路径,之后可按此路径访问(静态资源)

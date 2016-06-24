@@ -58,5 +58,13 @@
   {
     "path": "^/api/v1/talkings/g/\\d+/count$",
     "method": "GET"
+  },
+  {
+    "path": "^/api/v1/image$",
+    "method": "POST"
+  },
+  {
+    "path": "^/uploads/.*$",
+    "method": "GET"
   }
 ]

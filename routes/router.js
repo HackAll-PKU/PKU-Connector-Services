@@ -28,6 +28,9 @@ module.exports = function(app) {
     // 关注相关的api模块
     var followHandler = require('./follow.js');
     app.use(followHandler);
+    // 图片上传的api模块
+    var uploadImageHandler = require('./uploadImage.js');
+    app.use(uploadImageHandler);
     // 在此处添加其他的路由器,按照功能划分
     var testHandler = require("./test.js");
     app.use(testHandler);
