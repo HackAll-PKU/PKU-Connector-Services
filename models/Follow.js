@@ -296,8 +296,8 @@ Relation.prototype.suggestUserNickname = function (requestUserNickname, completi
             return;
         }
         connection.query('SELECT DISTINCT `uid`, `nickname` FROM `PKU-Connector`.`follow` ' +
-            'LEFT JOIN `PKU-Connector`.`user` ON (`follow` = `uid` AND `follower` = ?) OR (`follower` = `uid` AND `follow` = ?) ' +
-            'WHERE `uid` IS NOT NULL AND `nickname` LIKE ? LIMIT 10',
+            ', `PKU-Connector`.`user` WHERE ((`follow` = `uid` AND `follower` = ?) OR (`follower` = `uid` AND `follow` = ?)) ' +
+            'AND (`nickname` LIKE ?) LIMIT 10',
             [requestUid, requestUid, '%' + requestUserNickname + '%'],
             function (err, rows) {
                 connection.release();
