@@ -82,14 +82,14 @@
     </object>
     <object type="LMREQUEST" id="z105">
         <attribute name="uuid" type="string">EEE09886-D952-407D-BD07-6823F6CA52A1</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"DE84AE21-9BA2-4BE9-B950-BBCCAF61A25E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/user\\/2"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"DE84AE21-9BA2-4BE9-B950-BBCCAF61A25E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/user\\/7"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">PUT</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"keyValues":[[["uname"],["陈乐天"],true],[["password"],["q"],true],[["nickname"],["qw"],true],[["avatar"],["qwe"],true],[["background"],["qwer"],true],[["gender"],["0"],true],[["signature"],["qwert"],true],[["birthday"],["1996-12-12 01:02:03"],true],[["department"],["psychologyhahahaha"],true],[["enrollmentYear"],["2000"],true]]},"identifier":"com.luckymarmot.BodyFormKeyValueDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"uname\\":\\"\\\\u9648\\\\u4e50\\\\u59291\\",\\"nickname\\":\\"qw\\",\\"avatar\\":\\"http:\\\\\\/\\\\\\/pikkacho.cn\\\\\\/uploads\\\\\\/image-1466823160129.jpg\\",\\"background\\":\\"http:\\\\\\/\\\\\\/pikkacho.cn\\\\\\/uploads\\\\\\/image-1466823162324.jpg\\",\\"gender\\":\\"0\\",\\"signature\\":\\"qwert\\",\\"birthday\\":\\"1996-12-12 01:02:03\\",\\"department\\":\\"psychologyhahahaha\\",\\"enrollmentYear\\":\\"2000\\"}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">2</attribute>
         <attribute name="name" type="string">修改用户信息</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z139"></relationship>
@@ -129,7 +129,7 @@
     </object>
     <object type="LMREQUEST" id="z110">
         <attribute name="uuid" type="string">805FBDBA-3852-40FD-8916-F46CB326CA2E</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"DE84AE21-9BA2-4BE9-B950-BBCCAF61A25E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/user\\/4"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"DE84AE21-9BA2-4BE9-B950-BBCCAF61A25E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/user\\/2"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -140,7 +140,7 @@
         <attribute name="name" type="string">获取用户信息</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z139"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z109 z119"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z119 z109"></relationship>
     </object>
     <object type="LMENVIRONMENTVARIABLE" id="z112">
         <attribute name="uuid" type="string">DE84AE21-9BA2-4BE9-B950-BBCCAF61A25E</attribute>
@@ -191,7 +191,7 @@
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z118"></relationship>
     </object>
     <object type="LMREQUEST" id="z118">
-        <attribute name="body" type="string">[{"data":{"keyValues":[[["uname"],["hehe"],true],[["password"],["1"],true]]},"identifier":"com.luckymarmot.BodyFormKeyValueDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"keyValues":[[["uname"],["陈乐天1"],true],[["password"],["1234567"],true]]},"identifier":"com.luckymarmot.BodyFormKeyValueDynamicValue"}]</attribute>
         <attribute name="uuid" type="string">64858523-9782-4F1A-8E29-95F90DAD9000</attribute>
         <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"environmentVariable":"DE84AE21-9BA2-4BE9-B950-BBCCAF61A25E"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/authentication"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
@@ -1260,7 +1260,7 @@
     </object>
     <object type="LMREQUEST" id="z221">
         <attribute name="uuid" type="string">EAF8681A-DA71-4274-8E09-153114D2A07B</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/",{"data":{"request":"9EF7FA38-E8DF-4210-A5BB-83B432CDB9DF","keyPath":["data[0]"],"format":1},"identifier":"com.luckymarmot.ResponseBodyPathDynamicValue"}]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"request":"9EF7FA38-E8DF-4210-A5BB-83B432CDB9DF","keyPath":["data[0]"],"format":1},"identifier":"com.luckymarmot.ResponseBodyPathDynamicValue"}]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
