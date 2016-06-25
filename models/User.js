@@ -149,6 +149,10 @@ User.prototype.authenticate = function (completionHandler) {
     });
 };
 
+/**
+ * 搜索用户
+ * @param completionHandler 返回闭包,包含err和rows
+ */
 User.prototype.searchUser = function (completionHandler) {
     var searchUserName = this.nickname;
     if (!searchUserName) {
