@@ -66,5 +66,9 @@
   {
     "path": "^/uploads/.*$",
     "method": "GET"
+  },
+  {
+    "path": "^/api/v1/search/users/.*$",
+    "method": "GET"
   }
 ]

@@ -149,4 +149,27 @@ User.prototype.authenticate = function (completionHandler) {
     });
 };
 
+User.prototype.searchUser = function (completionHandler) {
+    var searchUserName = this.nickname;
+    if (!searchUserName) {
+        completionHandler({code: 400, msg: "搜索名称为空"}, null);
+        return;
+    }
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            completionHandler({code: 500, msg: "连接数据库错误"}, null);
+            return;
+        }
+        connection.query("SELECT uid, nickname FROM `PKU-Connector`.`user` WHERE `nickname` like ?",
+            ['%' + searchUserName + '%'],
+            function (err, rows) {
+                connection.release();
+                if (err)
+                    completionHandler({code: 400, msg: err.code}, null);
+                else
+                    completionHandler(null, rows);
+            });
+    });
+};
+
 exports.User = User;

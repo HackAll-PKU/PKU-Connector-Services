@@ -50,3 +50,16 @@ exports.modifyUserInfo = function (req, res) {
             res.json({msg: "OK"});
     });
 };
+
+/**
+ * 搜索用户
+ */
+exports.searchUser = function (req, res) {
+    var user = new model.User(null, null, null, req.params.searchwords);
+    user.searchUser(function (err, result) {
+        if (err)
+            res.status(err.code).json({msg: err.msg});
+        else
+            res.json({msg: "OK", data: result});
+    });
+};
