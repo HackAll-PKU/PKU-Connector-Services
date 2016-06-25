@@ -108,7 +108,7 @@ POST /authentication
 /********************************
 *            Talking            *
 *********************************/
-寇雨婷
+胡顺昕
 
 ******************
 * Talking Object *
@@ -206,6 +206,7 @@ GET /group/suggest/name/:gname
 /*********************************
 *             Search             *
 **********************************/
+陈乐天
 
 GET /search/talkings/:searchwords
     JSON返回搜索到的所有的Talking数据  详见Talking
@@ -218,6 +219,7 @@ GET /search/users/:searchwords
 /*********************************
 *             Upload             *
 **********************************/
+陈乐天
 
 POST /image
     使用multipart/form-data上传

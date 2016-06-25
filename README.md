@@ -58,4 +58,9 @@
 - RESTful API使得前端的调用非常方便,接口结构也非常清晰
 - 用户认证没有使用不安全的Cookie和Session而使用了W3C推荐的[JSON Web Token](https://jwt.io)技术
 
+## 分工
+架构,User模块,认证模块,搜索模块,图片上传:陈乐天
+Talking模块,Comment模块,Follow模块:胡顺昕
+Like模块:寇雨婷
+
 ## Authored By 陈乐天，胡顺昕，寇雨婷
