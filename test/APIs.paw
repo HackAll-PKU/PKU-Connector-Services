@@ -1260,7 +1260,7 @@
     </object>
     <object type="LMREQUEST" id="z221">
         <attribute name="uuid" type="string">EAF8681A-DA71-4274-8E09-153114D2A07B</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"8CCD1822-E3D9-47C4-9936-70463B5D411D"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},{"data":{"request":"9EF7FA38-E8DF-4210-A5BB-83B432CDB9DF","keyPath":["data[0]"],"format":1},"identifier":"com.luckymarmot.ResponseBodyPathDynamicValue"}]</attribute>
+        <attribute name="url" type="string">[{"data":{"request":"9EF7FA38-E8DF-4210-A5BB-83B432CDB9DF","keyPath":["data[0]"],"format":1},"identifier":"com.luckymarmot.ResponseBodyPathDynamicValue"}]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>

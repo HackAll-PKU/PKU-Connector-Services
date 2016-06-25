@@ -221,4 +221,4 @@ GET /search/users/:searchwords
 
 POST /image
     使用multipart/form-data上传
-    JSON返回所保存的路径,之后可按此路径访问(静态资源)
+    JSON返回所保存的URL,之后可按此URL访问(静态资源)
