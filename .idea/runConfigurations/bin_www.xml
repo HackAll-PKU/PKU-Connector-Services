@@ -1,9 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="bin/www" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/local/bin/node" path-to-js-file="$PROJECT_DIR$/../PKU-Connector-Services/bin/www" working-dir="$PROJECT_DIR$/../PKU-Connector-Services">
+  <configuration default="false" name="bin/www" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/local/bin/node" path-to-js-file="$PROJECT_DIR$/bin/www" working-dir="$PROJECT_DIR$">
     <envs>
       <env name="DEBUG" value="PKU-Connector-Web:*" />
     </envs>
     <browser name="e5120d43-2c3f-47ef-9f26-65e539e05186" url="http://localhost:3000/test" />
+    <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSStartBrowserRunConfigurationExtension">
+      <browser name="e5120d43-2c3f-47ef-9f26-65e539e05186" url="http://localhost:3000/test" />
+    </EXTENSION>
     <method />
   </configuration>
 </component>
